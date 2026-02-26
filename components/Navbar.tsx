@@ -28,18 +28,23 @@ export function Navbar() {
   const contactHref = pathname === "/" ? "#contact" : "/#contact";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/70">
       <div className="mx-auto flex h-18 w-full max-w-6xl items-center justify-between px-5 md:px-8">
-        <span className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-zinc-200">+</span>
+        <span className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 text-slate-700 dark:border-white/15 dark:text-zinc-200">
+          +
+        </span>
 
-        <Link href="/" className="text-xs font-semibold tracking-[0.36em] text-zinc-200 uppercase hover:text-white">
+        <Link
+          href="/"
+          className="text-xs font-semibold tracking-[0.36em] text-slate-700 uppercase hover:text-slate-900 dark:text-zinc-200 dark:hover:text-white"
+        >
           ALBOT
         </Link>
 
         <div className="flex items-center gap-1 md:gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex h-10 items-center gap-2 rounded-full border border-white/15 px-4 text-sm text-zinc-200 transition hover:border-white/30 hover:text-white">
+              <button className="inline-flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white/80 px-4 text-sm text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:border-white/15 dark:bg-transparent dark:text-zinc-200 dark:hover:border-white/30 dark:hover:text-white">
                 <Menu className="h-4 w-4" />
                 All Pages
               </button>
@@ -58,19 +63,19 @@ export function Navbar() {
           <nav className="hidden items-center gap-1 md:flex">
             <Link
               href="/blog"
-              className="rounded-full px-3 py-2 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              className="rounded-full px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
             >
               Blog
             </Link>
             <Link
               href={aboutHref}
-              className="rounded-full px-3 py-2 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              className="rounded-full px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
             >
               About
             </Link>
             <Link
               href={contactHref}
-              className="rounded-full px-3 py-2 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              className="rounded-full px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
             >
               Contact
             </Link>

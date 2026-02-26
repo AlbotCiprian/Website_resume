@@ -75,12 +75,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <Container className="max-w-4xl">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200">
           <ArrowLeft className="h-4 w-4" />
           Back to blog
         </Link>
 
-        <header className="mt-6 border-b border-white/10 pb-8">
+        <header className="mt-6 border-b border-slate-200 pb-8 dark:border-white/10">
           <div className="flex flex-wrap gap-2">
             {meta.tags.map((tag) => (
               <Badge key={tag} variant="muted">
@@ -89,9 +89,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ))}
           </div>
 
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{meta.title}</h1>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-zinc-300">{meta.description}</p>
-          <p className="mt-4 text-sm text-zinc-400">
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl dark:text-white">{meta.title}</h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-zinc-300">{meta.description}</p>
+          <p className="mt-4 text-sm text-slate-500 dark:text-zinc-400">
             {new Date(meta.date).toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
@@ -103,24 +103,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </header>
 
         {meta.cover ? (
-          <div className="relative mt-8 aspect-[16/8] overflow-hidden rounded-3xl border border-white/10">
+          <div className="relative mt-8 aspect-[16/8] overflow-hidden rounded-3xl border border-slate-200 dark:border-white/10">
             <Image src={meta.cover} alt={meta.title} fill className="object-cover" priority />
           </div>
         ) : null}
 
-        <div className="prose prose-invert prose-zinc mt-10 max-w-none">{content}</div>
+        <div className="prose prose-slate mt-10 max-w-none dark:prose-invert dark:prose-zinc">{content}</div>
 
-        <nav className="mt-14 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-2">
+        <nav className="mt-14 grid gap-4 border-t border-slate-200 pt-8 md:grid-cols-2 dark:border-white/10">
           {adjacent.previous ? (
             <Link
               href={`/blog/${adjacent.previous.slug}`}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-cyan-400/40"
+              className="group rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:border-cyan-500/40 dark:border-white/10 dark:bg-white/5 dark:hover:border-cyan-400/40"
             >
-              <p className="text-xs tracking-[0.16em] text-zinc-500 uppercase">Previous post</p>
-              <p className="mt-2 text-zinc-100 group-hover:text-cyan-200">{adjacent.previous.title}</p>
+              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">Previous post</p>
+              <p className="mt-2 text-slate-800 group-hover:text-cyan-700 dark:text-zinc-100 dark:group-hover:text-cyan-200">
+                {adjacent.previous.title}
+              </p>
             </Link>
           ) : (
-            <span className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-zinc-500">
+            <span className="rounded-2xl border border-slate-200 bg-white/90 p-4 text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
               No previous post
             </span>
           )}
@@ -128,16 +130,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {adjacent.next ? (
             <Link
               href={`/blog/${adjacent.next.slug}`}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-4 text-right transition hover:border-cyan-400/40"
+              className="group rounded-2xl border border-slate-200 bg-white/90 p-4 text-right transition hover:border-cyan-500/40 dark:border-white/10 dark:bg-white/5 dark:hover:border-cyan-400/40"
             >
-              <p className="text-xs tracking-[0.16em] text-zinc-500 uppercase">Next post</p>
-              <p className="mt-2 inline-flex items-center gap-2 text-zinc-100 group-hover:text-cyan-200">
+              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">Next post</p>
+              <p className="mt-2 inline-flex items-center gap-2 text-slate-800 group-hover:text-cyan-700 dark:text-zinc-100 dark:group-hover:text-cyan-200">
                 {adjacent.next.title}
                 <ArrowRight className="h-4 w-4" />
               </p>
             </Link>
           ) : (
-            <span className="rounded-2xl border border-white/10 bg-white/5 p-4 text-right text-sm text-zinc-500">
+            <span className="rounded-2xl border border-slate-200 bg-white/90 p-4 text-right text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
               No newer post
             </span>
           )}

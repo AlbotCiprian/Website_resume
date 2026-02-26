@@ -24,9 +24,9 @@ export default function ResumePage() {
         description="From data-centric foundations to production backend architecture and platform ownership."
         className="pt-16"
       >
-        <div className="rounded-3xl border border-white/10 bg-zinc-900/70 p-6 md:p-8">
-          <p className="max-w-4xl text-sm leading-8 text-zinc-300">{profile.shortAbout}</p>
-          <div className="mt-4 space-y-3 text-sm leading-7 text-zinc-300">
+        <div className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
+          <p className="max-w-4xl text-sm leading-8 text-slate-600 dark:text-zinc-300">{profile.shortAbout}</p>
+          <div className="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
             {profile.about.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -67,16 +67,16 @@ export default function ResumePage() {
         description="CEITI graduate with database administration specialization and ongoing Applied Information Science studies at USM."
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <article className="rounded-3xl border border-white/10 bg-zinc-900/70 p-6">
-            <h3 className="text-lg font-semibold text-white">Education</h3>
-            <ul className="mt-4 space-y-3 text-sm leading-7 text-zinc-300">
+          <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 dark:border-white/10 dark:bg-zinc-900/70">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Education</h3>
+            <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
               <li>CEITI, Chisinau (2019 - 2023), Database Administration focus</li>
               <li>USM, Chisinau, Applied Information Science (part-time)</li>
             </ul>
           </article>
-          <article className="rounded-3xl border border-white/10 bg-zinc-900/70 p-6">
-            <h3 className="text-lg font-semibold text-white">Languages</h3>
-            <ul className="mt-4 space-y-3 text-sm leading-7 text-zinc-300">
+          <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 dark:border-white/10 dark:bg-zinc-900/70">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Languages</h3>
+            <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
               {profile.languages.map((language) => (
                 <li key={language}>{language}</li>
               ))}

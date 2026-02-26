@@ -35,7 +35,7 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
 
   return (
     <>
-      <section className="relative isolate overflow-hidden border-b border-white/10">
+      <section className="relative isolate overflow-hidden border-b border-slate-200/70 dark:border-white/10">
         <div className="absolute inset-0 -z-10">
           <Background3D />
         </div>
@@ -97,20 +97,25 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
         description="I focus on systems that stay understandable under pressure and continue scaling without rewriting the core every quarter."
       >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-          <Accordion type="single" collapsible defaultValue={profile.whyChooseMe[0]?.id} className="rounded-3xl border border-white/10 bg-zinc-900/70 px-6 py-2">
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue={profile.whyChooseMe[0]?.id}
+            className="rounded-3xl border border-slate-200/80 bg-white/85 px-6 py-2 dark:border-white/10 dark:bg-zinc-900/70"
+          >
             {profile.whyChooseMe.map((item) => (
               <AccordionItem key={item.id} value={item.id}>
-                <AccordionTrigger className="text-base text-zinc-100">{item.title}</AccordionTrigger>
+                <AccordionTrigger className="text-base text-slate-800 dark:text-zinc-100">{item.title}</AccordionTrigger>
                 <AccordionContent>
-                  <p className="leading-7 text-zinc-300">{item.description}</p>
-                  <p className="mt-3 text-sm text-cyan-200">{item.outcome}</p>
+                  <p className="leading-7 text-slate-600 dark:text-zinc-300">{item.description}</p>
+                  <p className="mt-3 text-sm text-cyan-700 dark:text-cyan-200">{item.outcome}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
 
-          <article className="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/70 p-6">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10">
+          <article className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/85 p-6 dark:border-white/10 dark:bg-zinc-900/70">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10">
               <Image
                 src={profile.architectureCard}
                 alt="Architecture blueprint preview"
@@ -119,8 +124,8 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />
             </div>
-            <h3 className="mt-5 text-xl font-semibold text-white">System blueprint mindset</h3>
-            <p className="mt-3 text-sm leading-7 text-zinc-300">
+            <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-white">System blueprint mindset</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
               Reliable APIs, predictable data layers, and deployment practices that keep systems stable while the product evolves.
             </p>
           </article>
@@ -203,23 +208,23 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
         description="Share your project scope, current technical constraints, or hiring context and I will respond with concrete next steps."
       >
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <article className="rounded-3xl border border-white/10 bg-zinc-900/70 p-6 md:p-8">
+          <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
             <ContactForm />
           </article>
 
-          <article className="rounded-3xl border border-white/10 bg-zinc-900/70 p-6 md:p-8">
-            <h3 className="text-xl font-semibold text-white">Direct channels</h3>
-            <ul className="mt-5 space-y-4 text-sm text-zinc-300">
+          <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white">Direct channels</h3>
+            <ul className="mt-5 space-y-4 text-sm text-slate-600 dark:text-zinc-300">
               {profile.socials.map((social) => (
                 <li key={social.label}>
-                  <Link href={social.href} className="inline-flex items-center gap-2 hover:text-cyan-200">
+                  <Link href={social.href} className="inline-flex items-center gap-2 hover:text-cyan-700 dark:hover:text-cyan-200">
                     <Send className="h-4 w-4" />
                     {social.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="mt-8 text-sm text-zinc-400">{profile.location}</p>
+            <p className="mt-8 text-sm text-slate-500 dark:text-zinc-400">{profile.location}</p>
           </article>
         </div>
       </Section>

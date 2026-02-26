@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 export function ProjectCard({ project }: { project: ProjectItem }) {
   const imageNode = (
-    <div className="relative aspect-[16/10] overflow-hidden border-b border-white/10">
+    <div className="relative aspect-[16/10] overflow-hidden border-b border-slate-200 dark:border-white/10">
       <Image
         src={project.image}
         alt={project.title}
@@ -21,7 +21,7 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
   );
 
   return (
-    <Card className="group overflow-hidden border-white/10 bg-zinc-900/75 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/45">
+    <Card className="group overflow-hidden border-slate-200/80 bg-white/85 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/45 dark:border-white/10 dark:bg-zinc-900/75 dark:hover:border-cyan-400/45">
       {project.links.demo ? (
         <Link href={project.links.demo} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} website`}>
           {imageNode}
@@ -34,14 +34,14 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
         <div className="mb-3">
           <Badge variant="muted">{project.category}</Badge>
         </div>
-        <CardTitle className="text-xl text-white">{project.title}</CardTitle>
-        <p className="text-sm leading-7 text-zinc-300">{project.description}</p>
+        <CardTitle className="text-xl text-slate-900 dark:text-white">{project.title}</CardTitle>
+        <p className="text-sm leading-7 text-slate-600 dark:text-zinc-300">{project.description}</p>
       </CardHeader>
 
       <CardContent>
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-[11px] text-zinc-300">
+            <Badge key={tag} variant="outline" className="text-[11px] text-slate-700 dark:text-zinc-300">
               {tag}
             </Badge>
           ))}
@@ -54,7 +54,7 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
             href={project.links.github}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-200"
+            className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-cyan-700 dark:text-zinc-200 dark:hover:text-cyan-200"
           >
             <Github className="h-4 w-4" />
             GitHub
@@ -66,7 +66,7 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
             href={project.links.demo}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-200"
+            className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-cyan-700 dark:text-zinc-200 dark:hover:text-cyan-200"
           >
             <ExternalLink className="h-4 w-4" />
             Visit website
@@ -74,7 +74,10 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
         ) : null}
 
         {project.links.caseStudy ? (
-          <Link href={project.links.caseStudy} className="inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-200">
+          <Link
+            href={project.links.caseStudy}
+            className="inline-flex items-center gap-2 text-sm text-slate-700 hover:text-cyan-700 dark:text-zinc-200 dark:hover:text-cyan-200"
+          >
             <FileText className="h-4 w-4" />
             Case Study
           </Link>

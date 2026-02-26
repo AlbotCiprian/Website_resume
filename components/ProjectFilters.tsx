@@ -23,8 +23,8 @@ export function ProjectFilters({
           className={cn(
             "rounded-full border px-4 py-2 text-sm transition",
             value === category
-              ? "border-cyan-400/50 bg-cyan-500/20 text-cyan-100"
-              : "border-white/15 bg-white/5 text-zinc-300 hover:border-white/30 hover:text-white",
+              ? "border-cyan-500/40 bg-cyan-500/12 text-cyan-700 dark:border-cyan-400/50 dark:bg-cyan-500/20 dark:text-cyan-100"
+              : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:text-slate-900 dark:border-white/15 dark:bg-white/5 dark:text-zinc-300 dark:hover:border-white/30 dark:hover:text-white",
           )}
         >
           {category}

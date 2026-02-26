@@ -37,7 +37,7 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
     <div>
       <div className="mb-8 grid gap-4 md:grid-cols-[1fr_auto]">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -54,8 +54,8 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
               onClick={() => setTag(item)}
               className={`rounded-full border px-3 py-1.5 text-sm transition ${
                 tag === item
-                  ? "border-cyan-400/50 bg-cyan-500/20 text-cyan-100"
-                  : "border-white/15 bg-white/5 text-zinc-300 hover:border-white/30 hover:text-white"
+                  ? "border-cyan-500/40 bg-cyan-500/12 text-cyan-700 dark:border-cyan-400/50 dark:bg-cyan-500/20 dark:text-cyan-100"
+                  : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:text-slate-900 dark:border-white/15 dark:bg-white/5 dark:text-zinc-300 dark:hover:border-white/30 dark:hover:text-white"
               }`}
             >
               {item}
@@ -71,7 +71,7 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center text-zinc-400">
+        <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400">
           No posts matched your search.
         </div>
       )}

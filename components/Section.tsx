@@ -17,10 +17,14 @@ export function Section({ id, eyebrow, title, description, className, children }
       <Container>
         <div className="mb-10 max-w-3xl">
           {eyebrow ? (
-            <p className="mb-4 text-sm font-medium tracking-[0.18em] text-cyan-300/80 uppercase">{eyebrow}</p>
+            <p className="mb-4 text-sm font-medium tracking-[0.18em] text-cyan-700/85 uppercase dark:text-cyan-300/80">
+              {eyebrow}
+            </p>
           ) : null}
-          <h2 className="text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
-          {description ? <p className="mt-5 text-base leading-8 text-zinc-300 md:text-lg">{description}</p> : null}
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl dark:text-white">{title}</h2>
+          {description ? (
+            <p className="mt-5 text-base leading-8 text-slate-600 md:text-lg dark:text-zinc-300">{description}</p>
+          ) : null}
         </div>
         {children}
       </Container>

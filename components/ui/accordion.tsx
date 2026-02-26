@@ -10,7 +10,7 @@ function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.
 }
 
 function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
-  return <AccordionPrimitive.Item className={cn("border-b border-white/10", className)} {...props} />;
+  return <AccordionPrimitive.Item className={cn("border-b border-slate-200 dark:border-white/10", className)} {...props} />;
 }
 
 function AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
@@ -18,7 +18,7 @@ function AccordionTrigger({ className, children, ...props }: React.ComponentProp
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "group flex flex-1 items-center justify-between py-4 text-left text-sm font-medium transition hover:text-cyan-200",
+          "group flex flex-1 items-center justify-between py-4 text-left text-sm font-medium text-slate-700 transition hover:text-cyan-700 dark:text-zinc-200 dark:hover:text-cyan-200",
           className,
         )}
         {...props}
@@ -36,7 +36,7 @@ function AccordionContent({ className, children, ...props }: React.ComponentProp
       className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <div className={cn("pb-4 text-zinc-300", className)}>{children}</div>
+      <div className={cn("pb-4 text-slate-600 dark:text-zinc-300", className)}>{children}</div>
     </AccordionPrimitive.Content>
   );
 }
