@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/Container";
 import { Badge } from "@/components/ui/badge";
+import { getServerDictionary, getServerLocale } from "@/lib/i18n-server";
 import { getAdjacentPosts, getPostBySlug, getPostSlugs } from "@/lib/mdx";
 import { articleJsonLd, buildMetadata } from "@/lib/seo";
 
@@ -60,8 +61,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const [adjacent, dictionary, locale] = await Promise.all([
+    getAdjacentPosts(slug),
+    getServerDictionary(),
+    getServerLocale(),
+  ]);
+
   const { content, meta } = post;
-  const adjacent = await getAdjacentPosts(slug);
   const jsonLd = articleJsonLd({
     title: meta.title,
     description: meta.description,
@@ -75,9 +81,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <Container className="max-w-4xl">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+        >
           <ArrowLeft className="h-4 w-4" />
-          Back to blog
+          {dictionary.blogPage.backToBlog}
         </Link>
 
         <header className="mt-6 border-b border-slate-200 pb-8 dark:border-white/10">
@@ -92,7 +101,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl dark:text-white">{meta.title}</h1>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-zinc-300">{meta.description}</p>
           <p className="mt-4 text-sm text-slate-500 dark:text-zinc-400">
-            {new Date(meta.date).toLocaleDateString("en-US", {
+            {new Date(meta.date).toLocaleDateString(locale === "ro" ? "ro-RO" : "en-US", {
               month: "long",
               day: "numeric",
               year: "numeric",
@@ -116,14 +125,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               href={`/blog/${adjacent.previous.slug}`}
               className="group rounded-2xl border border-slate-200 bg-white/90 p-4 transition hover:border-cyan-500/40 dark:border-white/10 dark:bg-white/5 dark:hover:border-cyan-400/40"
             >
-              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">Previous post</p>
+              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">{dictionary.common.previousPost}</p>
               <p className="mt-2 text-slate-800 group-hover:text-cyan-700 dark:text-zinc-100 dark:group-hover:text-cyan-200">
                 {adjacent.previous.title}
               </p>
             </Link>
           ) : (
             <span className="rounded-2xl border border-slate-200 bg-white/90 p-4 text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
-              No previous post
+              {dictionary.common.noPreviousPost}
             </span>
           )}
 
@@ -132,7 +141,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               href={`/blog/${adjacent.next.slug}`}
               className="group rounded-2xl border border-slate-200 bg-white/90 p-4 text-right transition hover:border-cyan-500/40 dark:border-white/10 dark:bg-white/5 dark:hover:border-cyan-400/40"
             >
-              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">Next post</p>
+              <p className="text-xs tracking-[0.16em] text-slate-500 uppercase dark:text-zinc-500">{dictionary.common.nextPost}</p>
               <p className="mt-2 inline-flex items-center gap-2 text-slate-800 group-hover:text-cyan-700 dark:text-zinc-100 dark:group-hover:text-cyan-200">
                 {adjacent.next.title}
                 <ArrowRight className="h-4 w-4" />
@@ -140,7 +149,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </Link>
           ) : (
             <span className="rounded-2xl border border-slate-200 bg-white/90 p-4 text-right text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
-              No newer post
+              {dictionary.common.noNextPost}
             </span>
           )}
         </nav>

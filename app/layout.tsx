@@ -4,7 +4,9 @@ import { Toaster } from "sonner";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { LanguageProvider } from "@/components/providers/language-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { getServerLocale } from "@/lib/i18n-server";
 import { siteConfig } from "@/lib/seo";
 
 import "./globals.css";
@@ -60,20 +62,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getServerLocale();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased`}>
         <ThemeProvider>
-          <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background text-foreground">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <LanguageProvider initialLocale={locale}>
+            <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background text-foreground">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </LanguageProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

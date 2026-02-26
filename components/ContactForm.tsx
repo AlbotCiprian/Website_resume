@@ -4,6 +4,7 @@ import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { useI18n } from "@/components/providers/language-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +24,7 @@ const initialState: FormState = {
 };
 
 export function ContactForm() {
+  const { dictionary } = useI18n();
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -42,13 +44,13 @@ export function ContactForm() {
       const data = (await response.json()) as { message?: string; error?: string };
 
       if (!response.ok) {
-        throw new Error(data.error ?? "Could not send your message.");
+        throw new Error(data.error ?? dictionary.contactForm.failed);
       }
 
-      toast.success(data.message ?? "Message sent successfully.");
+      toast.success(data.message ?? dictionary.contactForm.success);
       setForm(initialState);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not send your message.");
+      toast.error(error instanceof Error ? error.message : dictionary.contactForm.failed);
     } finally {
       setSubmitting(false);
     }
@@ -59,7 +61,7 @@ export function ContactForm() {
       <div className="grid gap-4 md:grid-cols-2">
         <Input
           required
-          placeholder="Your name"
+          placeholder={dictionary.contactForm.namePlaceholder}
           value={form.name}
           onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
           minLength={2}
@@ -69,7 +71,7 @@ export function ContactForm() {
         <Input
           required
           type="email"
-          placeholder="Your email"
+          placeholder={dictionary.contactForm.emailPlaceholder}
           value={form.email}
           onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
           minLength={5}
@@ -90,7 +92,7 @@ export function ContactForm() {
 
       <Textarea
         required
-        placeholder="Tell me about your project or role"
+        placeholder={dictionary.contactForm.messagePlaceholder}
         minLength={20}
         maxLength={2000}
         name="message"
@@ -102,12 +104,12 @@ export function ContactForm() {
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
+            {dictionary.contactForm.sending}
           </>
         ) : (
           <>
             <Send className="mr-2 h-4 w-4" />
-            Send message
+            {dictionary.contactForm.send}
           </>
         )}
       </Button>

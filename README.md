@@ -22,6 +22,12 @@ Premium personal portfolio website for **Albot Ciprian** (Senior Backend Enginee
 - `/blog` Blog list + search + tag filter
 - `/blog/[slug]` Static MDX post pages (with next/prev navigation)
 
+## Languages
+
+- English and Romanian UI support (`EN` / `RO` toggle in navbar)
+- Locale persisted in `lang` cookie
+- Server-rendered pages read locale from cookie via `lib/i18n-server.ts`
+
 ## Project Structure
 
 - `app/` routes, layout, APIs, sitemap, robots

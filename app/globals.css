@@ -28,6 +28,10 @@ body {
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-sans), sans-serif;
   background:
@@ -35,6 +39,12 @@ body {
     radial-gradient(circle at 88% 72%, rgba(16, 185, 129, 0.1), transparent 28%),
     var(--background);
   color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 a {

@@ -1,16 +1,20 @@
 ﻿"use client";
 
 import { Search } from "lucide-react";
+import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 import type { PostMeta } from "@/lib/mdx";
+import { fadeUp, staggerContainer } from "@/lib/motion";
 
 import { BlogCard } from "@/components/BlogCard";
+import { useI18n } from "@/components/providers/language-provider";
 import { Input } from "@/components/ui/input";
 
 export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState<string>("All");
+  const { dictionary } = useI18n();
 
   const tags = useMemo(() => {
     const allTags = new Set<string>();
@@ -41,7 +45,7 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by title, description or tag"
+            placeholder={dictionary.blogExplorer.searchPlaceholder}
             className="pl-10"
           />
         </label>
@@ -58,21 +62,23 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
                   : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:text-slate-900 dark:border-white/15 dark:bg-white/5 dark:text-zinc-300 dark:hover:border-white/30 dark:hover:text-white"
               }`}
             >
-              {item}
+              {item === "All" ? dictionary.filters.All : item}
             </button>
           ))}
         </div>
       </div>
 
       {filteredPosts.length ? (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredPosts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
+            <motion.div key={post.slug} variants={fadeUp}>
+              <BlogCard post={post} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
         <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400">
-          No posts matched your search.
+          {dictionary.blogExplorer.noResults}
         </div>
       )}
     </div>

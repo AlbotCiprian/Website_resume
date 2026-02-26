@@ -7,6 +7,7 @@ import { Timeline } from "@/components/Timeline";
 import { Button } from "@/components/ui/button";
 import { experience } from "@/content/experience";
 import { profile } from "@/content/profile";
+import { getServerDictionary } from "@/lib/i18n-server";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -15,13 +16,15 @@ export const metadata = buildMetadata({
   path: "/resume",
 });
 
-export default function ResumePage() {
+export default async function ResumePage() {
+  const dictionary = await getServerDictionary();
+
   return (
     <div className="pb-24">
       <Section
-        eyebrow="Resume"
-        title="Senior Backend Engineer & Systems Architect"
-        description="From data-centric foundations to production backend architecture and platform ownership."
+        eyebrow={dictionary.resumePage.eyebrow}
+        title={dictionary.resumePage.title}
+        description={dictionary.resumePage.description}
         className="pt-16"
       >
         <div className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
@@ -35,47 +38,47 @@ export default function ResumePage() {
             <Button asChild>
               <Link href={profile.resumePath} target="_blank">
                 <Download className="mr-2 h-4 w-4" />
-                Download CV (PDF)
+                {dictionary.resumePage.downloadPdf}
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/projects">View Projects</Link>
+              <Link href="/projects">{dictionary.resumePage.viewProjects}</Link>
             </Button>
           </div>
         </div>
       </Section>
 
       <Section
-        eyebrow="Career timeline"
-        title="Experience"
-        description="Roles across banking, enterprise analytics, consulting, and product architecture."
+        eyebrow={dictionary.resumePage.careerEyebrow}
+        title={dictionary.resumePage.careerTitle}
+        description={dictionary.resumePage.careerDescription}
       >
         <Timeline items={experience} />
       </Section>
 
       <Section
-        eyebrow="Technical strengths"
-        title="Core capabilities"
-        description="Practical skill groups used in production delivery and architecture decisions."
+        eyebrow={dictionary.resumePage.strengthsEyebrow}
+        title={dictionary.resumePage.strengthsTitle}
+        description={dictionary.resumePage.strengthsDescription}
       >
         <TechStack groups={profile.skills} />
       </Section>
 
       <Section
-        eyebrow="Education & languages"
-        title="Academic path"
-        description="CEITI graduate with database administration specialization and ongoing Applied Information Science studies at USM."
+        eyebrow={dictionary.resumePage.eduEyebrow}
+        title={dictionary.resumePage.eduTitle}
+        description={dictionary.resumePage.eduDescription}
       >
         <div className="grid gap-6 md:grid-cols-2">
           <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 dark:border-white/10 dark:bg-zinc-900/70">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Education</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{dictionary.resumePage.education}</h3>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
               <li>CEITI, Chisinau (2019 - 2023), Database Administration focus</li>
               <li>USM, Chisinau, Applied Information Science (part-time)</li>
             </ul>
           </article>
           <article className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 dark:border-white/10 dark:bg-zinc-900/70">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Languages</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{dictionary.resumePage.languages}</h3>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">
               {profile.languages.map((language) => (
                 <li key={language}>{language}</li>

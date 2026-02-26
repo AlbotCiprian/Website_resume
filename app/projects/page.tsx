@@ -1,6 +1,7 @@
 ﻿import { ProjectsGrid } from "@/components/ProjectsGrid";
 import { Section } from "@/components/Section";
 import { projects } from "@/content/projects";
+import { getServerDictionary } from "@/lib/i18n-server";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -9,12 +10,14 @@ export const metadata = buildMetadata({
   path: "/projects",
 });
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const dictionary = await getServerDictionary();
+
   return (
     <Section
-      eyebrow="Project archive"
-      title="All projects"
-      description="Filter by domain to explore banking integrations, SaaS systems, data workflows and infrastructure-focused delivery."
+      eyebrow={dictionary.projectsPage.eyebrow}
+      title={dictionary.projectsPage.title}
+      description={dictionary.projectsPage.description}
       className="pt-16"
     >
       <ProjectsGrid items={projects} />
