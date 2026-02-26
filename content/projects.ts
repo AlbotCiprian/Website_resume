@@ -25,10 +25,24 @@ export const projects: ProjectItem[] = [
       "Independent full-stack marketplace platform with modular backend architecture, scalable catalog flows, and SEO-oriented landing system.",
     category: "SaaS",
     tags: ["Node.js", "PostgreSQL", "Vercel", "Neon", "Architecture"],
-    image: "/images/projects/instastore.svg",
+    image: "/images/projects/instastore-real.jpg",
     featured: true,
     links: {
-      demo: "https://instastore.md",
+      demo: "https://www.instastore.md/home",
+      github: "https://github.com/AlbotCiprian",
+    },
+  },
+  {
+    slug: "masivcorp-website-platform",
+    title: "MasivCorp Website Platform",
+    description:
+      "Corporate web platform for product presentation, multilingual structure, and lead-focused navigation in an industrial business domain.",
+    category: "SaaS",
+    tags: ["Next.js", "UX Architecture", "Multilingual", "Performance", "SEO"],
+    image: "/images/projects/masivcorp-real.jpg",
+    featured: true,
+    links: {
+      demo: "https://masivcorp.md/en/",
       github: "https://github.com/AlbotCiprian",
     },
   },
@@ -41,9 +55,7 @@ export const projects: ProjectItem[] = [
     tags: ["REST APIs", "Payments", "Insurance", "Docker", "Secure Logic"],
     image: "/images/projects/banking-api.svg",
     featured: true,
-    links: {
-      caseStudy: "#",
-    },
+    links: {},
   },
   {
     slug: "saas-core-platform",
@@ -54,9 +66,7 @@ export const projects: ProjectItem[] = [
     tags: ["Multi-tenant", "Modular Services", "PostgreSQL", "Cloud-ready"],
     image: "/images/projects/saas-core.svg",
     featured: true,
-    links: {
-      caseStudy: "#",
-    },
+    links: {},
   },
   {
     slug: "banking-analytics-pipeline",
@@ -67,9 +77,7 @@ export const projects: ProjectItem[] = [
     tags: ["Python", "SQL", "ETL", "Validation", "Reporting"],
     image: "/images/projects/data-pipeline.svg",
     featured: true,
-    links: {
-      caseStudy: "#",
-    },
+    links: {},
   },
   {
     slug: "platform-observability",
@@ -80,9 +88,7 @@ export const projects: ProjectItem[] = [
     tags: ["Grafana", "Linux", "VPS", "Monitoring", "Reliability"],
     image: "/images/projects/platform-observability.svg",
     featured: false,
-    links: {
-      caseStudy: "#",
-    },
+    links: {},
   },
   {
     slug: "freelance-data-suite",

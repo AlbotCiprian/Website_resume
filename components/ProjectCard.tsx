@@ -8,17 +8,27 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ProjectCard({ project }: { project: ProjectItem }) {
+  const imageNode = (
+    <div className="relative aspect-[16/10] overflow-hidden border-b border-white/10">
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+      />
+    </div>
+  );
+
   return (
     <Card className="group overflow-hidden border-white/10 bg-zinc-900/75 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/45">
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-white/10">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-      </div>
+      {project.links.demo ? (
+        <Link href={project.links.demo} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} website`}>
+          {imageNode}
+        </Link>
+      ) : (
+        imageNode
+      )}
 
       <CardHeader>
         <div className="mb-3">
@@ -59,7 +69,7 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
             className="inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-200"
           >
             <ExternalLink className="h-4 w-4" />
-            Live
+            Visit website
           </Link>
         ) : null}
 
