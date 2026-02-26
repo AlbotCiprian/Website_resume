@@ -1,0 +1,9 @@
+﻿<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#0B1728"/>
+  <rect x="140" y="126" width="920" height="510" rx="26" fill="#10223C" stroke="#2B4F7F"/>
+  <text x="210" y="250" fill="#E5EEFF" font-size="66" font-family="monospace">Banking API Suite</text>
+  <text x="210" y="332" fill="#92A9CF" font-size="34" font-family="monospace">Payments | Insurance | Core Flows</text>
+  <path d="M220 420H980" stroke="#3C6BFF" stroke-width="8"/>
+  <path d="M220 476H980" stroke="#1AC8B0" stroke-width="8"/>
+  <path d="M220 532H980" stroke="#3C6BFF" stroke-width="8"/>
+</svg>

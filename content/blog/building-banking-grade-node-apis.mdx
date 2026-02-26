@@ -1,0 +1,37 @@
+﻿---
+title: "Building Banking-Grade Node.js APIs"
+description: "A practical checklist for secure, reliable and maintainable backend services in regulated environments."
+date: "2026-01-12"
+tags:
+  - backend
+  - banking
+  - nodejs
+cover: "/images/projects/banking-api.svg"
+published: true
+---
+
+When an API starts handling money movement, correctness becomes more important than feature velocity.
+
+## Non-negotiables
+
+1. Explicit input contracts with clear validation errors.
+2. Deterministic business rules with audited edge cases.
+3. Structured logs and traceable request IDs.
+4. Idempotency for any critical write operation.
+5. Safe fallback behavior for downstream service failures.
+
+## A simple transaction guard
+
+```ts
+export function ensurePositiveAmount(amount: number) {
+  if (!Number.isFinite(amount) || amount <= 0) {
+    throw new Error("Amount must be a positive number.");
+  }
+}
+```
+
+Small guardrails like this are not enough alone, but they force correctness into every layer.
+
+## Final thought
+
+Treat every external integration as a failure-prone dependency and every critical path as an incident that just has not happened yet.

@@ -1,0 +1,12 @@
+﻿<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#0E1A2F"/>
+  <rect x="132" y="130" width="936" height="500" rx="24" fill="#122440" stroke="#365A89"/>
+  <text x="196" y="252" fill="#EFF5FF" font-size="68" font-family="monospace">SaaS Core</text>
+  <text x="196" y="334" fill="#9BB4DC" font-size="34" font-family="monospace">Multi-tenant backend</text>
+  <rect x="196" y="394" width="224" height="64" rx="12" fill="#1C365D"/>
+  <text x="232" y="436" fill="#ABCBFF" font-size="28" font-family="monospace">Billing API</text>
+  <rect x="450" y="394" width="224" height="64" rx="12" fill="#1C365D"/>
+  <text x="484" y="436" fill="#ABCBFF" font-size="28" font-family="monospace">Auth</text>
+  <rect x="704" y="394" width="224" height="64" rx="12" fill="#1C365D"/>
+  <text x="728" y="436" fill="#ABCBFF" font-size="28" font-family="monospace">Events</text>
+</svg>

@@ -1,0 +1,8 @@
+﻿<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#0C172A"/>
+  <rect x="136" y="124" width="928" height="516" rx="24" fill="#101F37" stroke="#2F4D75"/>
+  <text x="206" y="252" fill="#ECF3FF" font-size="62" font-family="monospace">Platform Observability</text>
+  <text x="206" y="332" fill="#95ABD2" font-size="34" font-family="monospace">Metrics, tracing and alerts</text>
+  <path d="M214 470C300 410 378 520 454 470C530 420 616 536 692 470C768 404 850 534 946 450" stroke="#1AC8B0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M214 540C292 486 382 600 456 530C530 460 620 590 692 520C764 450 854 586 946 500" stroke="#4D6BFF" stroke-width="10" stroke-linecap="round"/>
+</svg>

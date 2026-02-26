@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# Albot Ciprian Portfolio
 
-## Getting Started
+Premium personal portfolio website for **Albot Ciprian** (Senior Backend Engineer & Systems Architect), built with Next.js App Router and a dark premium UI style.
 
-First, run the development server:
+## Tech Stack
+
+- Next.js 16 (App Router, TypeScript strict)
+- Tailwind CSS v4
+- Framer Motion
+- shadcn-style UI components + lucide-react
+- next-themes (dark/light toggle)
+- MDX blog with @next/mdx + `next-mdx-remote/rsc`
+- GitHub Activity feed via Next API route with caching
+- Subtle Three.js background (`@react-three/fiber` + `drei`, dynamic import, SSR disabled)
+- Contact API with validation, honeypot, rate-limit, Resend/Nodemailer
+
+## Pages
+
+- `/` Home one-page sections
+- `/projects` Projects grid + filters
+- `/resume` Online resume + PDF download
+- `/blog` Blog list + search + tag filter
+- `/blog/[slug]` Static MDX post pages (with next/prev navigation)
+
+## Project Structure
+
+- `app/` routes, layout, APIs, sitemap, robots
+- `components/` reusable UI and sections
+- `content/` source of truth for profile/experience/projects/blog MDX
+- `lib/` mdx loader, seo helpers, github normalization, utilities
+- `public/` images and `public/resume/Albot-Ciprian-CV.pdf`
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Configure environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+Required for full contact functionality:
 
-To learn more about Next.js, take a look at the following resources:
+- `CONTACT_TO_EMAIL` recipient email
+- `CONTACT_FROM_EMAIL` sender email (must be verified with provider)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Preferred email provider (Resend):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `RESEND_API_KEY`
 
-## Deploy on Vercel
+Optional SMTP fallback (if not using Resend):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `SMTP_HOST`
+- `SMTP_PORT` (default: 465)
+- `SMTP_USER`
+- `SMTP_PASSWORD`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Optional project metadata and GitHub rate-limit support:
+
+- `NEXT_PUBLIC_SITE_URL` (for canonical URLs, JSON-LD, sitemap)
+- `GITHUB_TOKEN` (optional, higher GitHub API limits)
+
+## Build & Quality
+
+```bash
+npm run lint
+npm run build
+```
+
+Both commands pass successfully on this codebase.
+
+## Deploy to Vercel
+
+1. Push repository to GitHub/GitLab/Bitbucket.
+2. Import project in Vercel.
+3. Add the environment variables from `.env.example` in Vercel Project Settings.
+4. Set `NEXT_PUBLIC_SITE_URL` to your production domain (for example `https://yourdomain.com`).
+5. Deploy.
+
+Vercel uses:
+
+- Build command: `npm run build`
+- Output: Next.js default
+
+## Notes
+
+- GitHub feed endpoint: `app/api/github/route.ts` (`revalidate = 3600`)
+- Contact endpoint: `app/api/contact/route.ts` with validation + anti-spam protections
+- Three.js background auto-disables on mobile and on `prefers-reduced-motion`

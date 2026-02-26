@@ -1,0 +1,34 @@
+﻿---
+title: "SQL Performance Playbook for Real Systems"
+description: "Query tuning patterns that consistently reduce latency in production workloads."
+date: "2025-11-18"
+tags:
+  - sql
+  - postgres
+  - data
+cover: "/images/projects/data-pipeline.svg"
+published: true
+---
+
+Performance work starts with measurement, not assumptions.
+
+## What I check first
+
+1. Query plan shape and index usage.
+2. Cardinality mismatch in joins.
+3. Repeated heavy reads with no caching strategy.
+4. Overly wide result sets.
+
+## Practical example
+
+```sql
+EXPLAIN ANALYZE
+SELECT id, status, created_at
+FROM orders
+WHERE account_id = $1
+  AND created_at >= NOW() - INTERVAL '30 days'
+ORDER BY created_at DESC
+LIMIT 100;
+```
+
+When the plan is stable and the index strategy is aligned with access patterns, latency drops quickly.

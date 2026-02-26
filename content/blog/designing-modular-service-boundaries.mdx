@@ -1,0 +1,28 @@
+﻿---
+title: "Designing Modular Service Boundaries"
+description: "How to split backend domains without creating accidental distributed monoliths."
+date: "2025-12-05"
+tags:
+  - architecture
+  - microservices
+  - backend
+cover: "/images/projects/saas-core.svg"
+published: true
+---
+
+Modularity is not about having many repositories. It is about reducing coupling and preserving delivery speed.
+
+## Boundary rules I use
+
+- Separate services by business capability, not by technical layer.
+- Keep contracts explicit and versioned.
+- Share as little runtime state as possible.
+- Fail fast on contract drift.
+
+## Warning signs
+
+- One service cannot deploy without three others.
+- Every change requires synchronized releases.
+- Teams cannot explain ownership in one sentence.
+
+A modular system should make change easier, not harder.

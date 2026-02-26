@@ -1,0 +1,13 @@
+﻿<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#0D1728"/>
+  <rect x="128" y="124" width="944" height="510" rx="24" fill="#10213A" stroke="#2B4C74"/>
+  <text x="200" y="252" fill="#EBF2FF" font-size="66" font-family="monospace">Data Pipeline</text>
+  <text x="200" y="334" fill="#93ACD6" font-size="34" font-family="monospace">ETL + Validation + Reporting</text>
+  <circle cx="290" cy="470" r="48" fill="#3D68FF"/>
+  <circle cx="516" cy="470" r="48" fill="#1AC8B0"/>
+  <circle cx="742" cy="470" r="48" fill="#3D68FF"/>
+  <circle cx="968" cy="470" r="48" fill="#1AC8B0"/>
+  <path d="M340 470H468" stroke="#81A2E3" stroke-width="8"/>
+  <path d="M566 470H694" stroke="#81A2E3" stroke-width="8"/>
+  <path d="M792 470H920" stroke="#81A2E3" stroke-width="8"/>
+</svg>
