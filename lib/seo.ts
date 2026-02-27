@@ -64,7 +64,7 @@ export function personJsonLd() {
     email: "mailto:albotciprian05@gmail.com",
     sameAs: [
       "https://github.com/AlbotCiprian",
-      "https://www.linkedin.com/in/albot-ciprian",
+      "https://www.linkedin.com/in/albot-ciprian-a04024208/",
     ],
     knowsAbout: [
       "Node.js",

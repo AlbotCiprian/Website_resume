@@ -44,7 +44,7 @@ export const profile = {
     },
     {
       label: "LinkedIn",
-      href: "https://www.linkedin.com/in/albot-ciprian",
+      href: "https://www.linkedin.com/in/albot-ciprian-a04024208/",
     },
     {
       label: "Email",

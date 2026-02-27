@@ -24,7 +24,7 @@ export function Footer() {
       title: dictionary.footer.social,
       items: [
         { label: dictionary.common.github, href: "https://github.com/AlbotCiprian" },
-        { label: dictionary.common.linkedin, href: "https://www.linkedin.com/in/albot-ciprian" },
+        { label: dictionary.common.linkedin, href: "https://www.linkedin.com/in/albot-ciprian-a04024208/" },
         { label: dictionary.common.email, href: "mailto:albotciprian05@gmail.com" },
       ],
     },
@@ -59,7 +59,7 @@ export function Footer() {
                 <Github className="h-4 w-4" />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/albot-ciprian"
+                href="https://www.linkedin.com/in/albot-ciprian-a04024208/"
                 className="rounded-full border border-slate-300 p-2 hover:bg-slate-200 dark:border-white/15 dark:hover:bg-white/10"
               >
                 <Linkedin className="h-4 w-4" />
