@@ -147,7 +147,7 @@ export const profile = {
     "French (B1)",
   ],
   resumePath: "/resume/Albot-Ciprian-CV.pdf",
-  avatar: "/images/avatar.svg",
+  avatar: "/images/ciprian.png",
   architectureCard: "/images/architecture-card.svg",
 };
 

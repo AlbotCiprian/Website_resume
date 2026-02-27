@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ArrowRight, Download, MoveDown, Send } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -11,18 +11,20 @@ import type { PostMeta } from "@/lib/mdx";
 import type { ProjectItem } from "@/content/projects";
 import { fadeIn, fadeUp, revealOnScroll, staggerContainer } from "@/lib/motion";
 
-import { BlogCard } from "@/components/BlogCard";
-import { ContactForm } from "@/components/ContactForm";
-import { Section } from "@/components/Section";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { AnimatedText } from "@/components/AnimatedText";
+import { BlogCard } from "@/components/BlogCard";
+import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
+import { Container } from "@/components/Container";
 import { ProjectCard } from "@/components/ProjectCard";
+import { Section } from "@/components/Section";
 import { TechStack } from "@/components/TechStack";
 import { Timeline } from "@/components/Timeline";
 import { useI18n } from "@/components/providers/language-provider";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { profile } from "@/content/profile";
 import { experience } from "@/content/experience";
+import { profile } from "@/content/profile";
 
 const Background3D = dynamic(() => import("@/components/Background3D"), {
   ssr: false,
@@ -38,12 +40,37 @@ const GithubFeed = dynamic(() => import("@/components/GithubFeed").then((module)
       {Array.from({ length: 4 }).map((_, index) => (
         <div
           key={`github-skeleton-${index}`}
-          className="h-16 animate-pulse rounded-2xl border border-slate-200 bg-white/85 dark:border-white/10 dark:bg-white/5"
+          className="h-16 animate-pulse rounded-2xl border border-white/10 bg-white/5"
         />
       ))}
     </div>
   ),
 });
+
+const aboutHeadlineVariants: Variants = {
+  hidden: { opacity: 0, y: -24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.48,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
+
+const aboutSubtextVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.15,
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
 
 export function HomeSections({ featuredProjects, latestPosts }: { featuredProjects: ProjectItem[]; latestPosts: PostMeta[] }) {
   const reducedMotion = useReducedMotion();
@@ -95,11 +122,11 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
 
   return (
     <>
-      <section ref={heroRef} className="relative isolate overflow-hidden border-b border-slate-200/70 dark:border-white/10">
+      <section ref={heroRef} className="relative isolate overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 -z-10">
           <Background3D />
         </div>
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_58%_30%,rgba(255,255,255,0.14),transparent_36%)]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_58%_30%,rgba(255,255,255,0.12),transparent_36%)]" />
 
         <div className="mx-auto grid min-h-[calc(100vh-72px)] w-full max-w-6xl items-center gap-10 px-5 py-20 md:px-8 lg:grid-cols-[1fr_0.92fr]">
           <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl">
@@ -121,8 +148,14 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
             </motion.div>
 
             <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
-              <motion.div whileHover={disableParallax ? undefined : { y: -2, scale: 1.01 }} whileTap={disableParallax ? undefined : { scale: 0.99 }}>
-                <Button asChild className="shadow-[0_10px_26px_rgba(34,211,238,0.2)] transition-shadow hover:shadow-[0_18px_40px_rgba(34,211,238,0.28)]">
+              <motion.div
+                whileHover={disableParallax ? undefined : { y: -2, scale: 1.02 }}
+                whileTap={disableParallax ? undefined : { scale: 0.99 }}
+              >
+                <Button
+                  asChild
+                  className="shadow-[0_10px_26px_rgba(34,211,238,0.2)] transition-shadow hover:shadow-[0_18px_40px_rgba(34,211,238,0.35)]"
+                >
                   <Link href="/projects">
                     {dictionary.common.viewProjects}
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -130,11 +163,14 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
                 </Button>
               </motion.div>
 
-              <motion.div whileHover={disableParallax ? undefined : { y: -2, scale: 1.01 }} whileTap={disableParallax ? undefined : { scale: 0.99 }}>
+              <motion.div
+                whileHover={disableParallax ? undefined : { y: -2, scale: 1.02 }}
+                whileTap={disableParallax ? undefined : { scale: 0.99 }}
+              >
                 <Button
                   asChild
                   variant="outline"
-                  className="bg-white/12 shadow-[0_10px_26px_rgba(15,23,42,0.18)] hover:bg-white/18 dark:bg-white/4 dark:hover:bg-white/10"
+                  className="border-white/20 bg-white/7 shadow-[0_10px_26px_rgba(15,23,42,0.26)] hover:bg-white/12"
                 >
                   <Link href={profile.resumePath} target="_blank">
                     {dictionary.common.downloadCv}
@@ -152,36 +188,29 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
             style={disableParallax ? undefined : { y: parallaxY }}
             className="relative mx-auto w-full max-w-[500px]"
           >
-            <div className="absolute -inset-7 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(34,211,238,0.34),transparent_56%)] blur-2xl" />
+            <div className="absolute -inset-9 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(34,211,238,0.34),transparent_56%)] blur-3xl" />
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-cyan-200/30 bg-slate-950/75 shadow-[0_28px_70px_rgba(2,8,20,0.52)] backdrop-blur">
-              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/12 via-transparent to-sky-500/16" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-cyan-200/28 bg-slate-950/75 shadow-[0_32px_84px_rgba(2,8,20,0.55)] backdrop-blur">
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/15 via-transparent to-sky-500/20" />
               <div className="relative aspect-[4/5]">
                 <Image
                   src={profile.avatar}
                   alt={`${profile.name} portrait`}
                   fill
                   sizes="(max-width: 1024px) 90vw, 38vw"
-                  className="object-cover"
+                  className="object-cover object-center contrast-110 saturate-110"
                   priority
                 />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,transparent_34%,rgba(2,8,20,0.5)_100%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_52%_35%,transparent_30%,rgba(2,8,20,0.56)_100%)]" />
               </div>
             </div>
 
             <motion.div
               whileHover={disableParallax ? undefined : { y: -3 }}
-              className="absolute -bottom-8 left-6 w-[72%] overflow-hidden rounded-2xl border border-cyan-200/20 bg-slate-950/86 p-3 shadow-[0_20px_42px_rgba(2,8,20,0.5)]"
+              className="absolute -bottom-7 left-6 w-[72%] rounded-2xl border border-cyan-200/22 bg-slate-950/88 p-4 shadow-[0_20px_42px_rgba(2,8,20,0.5)]"
             >
-              <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-cyan-100/10">
-                <Image
-                  src={profile.architectureCard}
-                  alt="Architecture card"
-                  fill
-                  sizes="(max-width: 1024px) 70vw, 24vw"
-                  className="object-cover"
-                />
-              </div>
+              <p className="text-[11px] tracking-[0.16em] text-cyan-200 uppercase">{profile.title}</p>
+              <p className="mt-1 text-sm text-zinc-200">Backend architecture with production ownership.</p>
             </motion.div>
           </motion.div>
         </div>
@@ -198,56 +227,72 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
         </motion.div>
       </section>
 
-      <Section
-        id="about"
-        eyebrow={dictionary.home.why.eyebrow}
-        title={dictionary.home.why.title}
-        description={dictionary.home.why.description}
-      >
-        <motion.div
-          variants={staggerContainer}
-          {...revealOnScroll}
-          className="relative grid gap-9 lg:grid-cols-[1.08fr_0.92fr]"
-        >
-          <div className="absolute left-0 right-0 top-1/2 hidden h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent lg:block dark:via-white/10" />
+      <section id="about" className="relative py-28 md:py-36">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/16 to-transparent" />
 
-          <motion.div variants={fadeUp} className="relative z-20">
-            <Accordion
-              type="single"
-              collapsible
-              defaultValue={whyChooseItems[0]?.id}
-              className="rounded-3xl border border-slate-200/80 bg-white/85 px-6 py-2 shadow-[0_20px_40px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-zinc-900/70 dark:shadow-[0_22px_48px_rgba(2,8,20,0.36)]"
-            >
-              {whyChooseItems.map((item) => (
-                <AccordionItem key={item.id} value={item.id}>
-                  <AccordionTrigger className="text-base text-slate-800 dark:text-zinc-100">{item.title}</AccordionTrigger>
-                  <AccordionContent>
-                    <p className="leading-7 text-slate-600 dark:text-zinc-300">{item.description}</p>
-                    <p className="mt-3 text-sm text-cyan-700 dark:text-cyan-200">{item.outcome}</p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+        <Container>
+          <motion.div variants={staggerContainer} {...revealOnScroll} className="mb-12 max-w-3xl">
+            <motion.p variants={fadeIn} className="mb-4 text-sm font-medium tracking-[0.18em] text-cyan-300/85 uppercase">
+              {dictionary.home.why.eyebrow}
+            </motion.p>
+            <motion.h2 variants={aboutHeadlineVariants} className="text-3xl font-semibold tracking-tight text-white md:text-6xl">
+              {dictionary.home.why.title}
+            </motion.h2>
+            <motion.p variants={aboutSubtextVariants} className="mt-5 text-base leading-8 text-zinc-300 md:text-lg">
+              {dictionary.home.why.description}
+            </motion.p>
           </motion.div>
 
-          <motion.article
-            variants={fadeUp}
-            className="relative z-10 overflow-hidden rounded-3xl border border-slate-200/80 bg-white/85 p-6 shadow-[0_20px_40px_rgba(15,23,42,0.08)] lg:-ml-8 lg:mt-10 dark:border-white/10 dark:bg-zinc-900/70 dark:shadow-[0_22px_48px_rgba(2,8,20,0.36)]"
-          >
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10">
-              <Image
-                src={profile.architectureCard}
-                alt="Architecture blueprint preview"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
-            </div>
-            <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-white">{dictionary.home.blueprintTitle}</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-zinc-300">{dictionary.home.blueprintDescription}</p>
-          </motion.article>
-        </motion.div>
-      </Section>
+          <motion.div variants={staggerContainer} {...revealOnScroll} className="relative grid gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+            <motion.div variants={fadeUp} className="relative z-20">
+              <Accordion
+                type="single"
+                collapsible
+                defaultValue={whyChooseItems[0]?.id}
+                className="rounded-3xl border border-white/12 bg-zinc-900/68 px-6 py-2 shadow-[0_22px_52px_rgba(2,8,20,0.4)] backdrop-blur"
+              >
+                {whyChooseItems.map((item) => (
+                  <AccordionItem key={item.id} value={item.id} className="border-white/10">
+                    <motion.div variants={fadeUp}>
+                      <AccordionTrigger className="text-base text-zinc-100 transition-all duration-300 hover:scale-[1.01] hover:text-cyan-200 hover:drop-shadow-[0_0_18px_rgba(34,211,238,0.25)]">
+                        {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <p className="leading-7 text-zinc-300">{item.description}</p>
+                        <p className="mt-3 text-sm text-cyan-200">{item.outcome}</p>
+                      </AccordionContent>
+                    </motion.div>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
+
+            <motion.article
+              variants={fadeIn}
+              className="relative z-10 overflow-hidden rounded-3xl border border-white/12 bg-zinc-900/68 p-6 shadow-[0_22px_52px_rgba(2,8,20,0.4)] lg:-ml-8 lg:mt-8"
+            >
+              <motion.div
+                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.96 }}
+                whileInView={reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.45 }}
+                transition={
+                  reducedMotion
+                    ? undefined
+                    : {
+                        duration: 0.48,
+                        ease: [0.22, 1, 0.36, 1],
+                      }
+                }
+              >
+                <ArchitectureDiagram enableParallax={!disableParallax} />
+              </motion.div>
+              <h3 className="mt-5 text-xl font-semibold text-white">{dictionary.home.blueprintTitle}</h3>
+              <p className="mt-3 text-sm leading-7 text-zinc-300">{dictionary.home.blueprintDescription}</p>
+            </motion.article>
+          </motion.div>
+        </Container>
+      </section>
 
       <Section
         id="experience"
@@ -327,23 +372,23 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
         description={dictionary.home.contact.description}
       >
         <motion.div variants={staggerContainer} {...revealOnScroll} className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <motion.article variants={fadeUp} className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
+          <motion.article variants={fadeUp} className="rounded-3xl border border-white/12 bg-zinc-900/68 p-6 md:p-8">
             <ContactForm />
           </motion.article>
 
-          <motion.article variants={fadeUp} className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 md:p-8 dark:border-white/10 dark:bg-zinc-900/70">
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{dictionary.common.directChannels}</h3>
-            <ul className="mt-5 space-y-4 text-sm text-slate-600 dark:text-zinc-300">
+          <motion.article variants={fadeUp} className="rounded-3xl border border-white/12 bg-zinc-900/68 p-6 md:p-8">
+            <h3 className="text-xl font-semibold text-white">{dictionary.common.directChannels}</h3>
+            <ul className="mt-5 space-y-4 text-sm text-zinc-300">
               {profile.socials.map((social) => (
                 <li key={social.label}>
-                  <Link href={social.href} className="inline-flex items-center gap-2 hover:text-cyan-700 dark:hover:text-cyan-200">
+                  <Link href={social.href} className="inline-flex items-center gap-2 hover:text-cyan-200">
                     <Send className="h-4 w-4" />
                     {socialLabelMap[social.label as keyof typeof socialLabelMap] ?? social.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="mt-8 text-sm text-slate-500 dark:text-zinc-400">{profile.location}</p>
+            <p className="mt-8 text-sm text-zinc-400">{profile.location}</p>
           </motion.article>
         </motion.div>
       </Section>

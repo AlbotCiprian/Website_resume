@@ -1,11 +1,11 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --background: #f4f8ff;
-  --foreground: #0f172a;
-  --surface: #ffffff;
-  --surface-border: rgba(15, 23, 42, 0.12);
-  --muted: #4b5563;
+  --background: #050910;
+  --foreground: #f3f7ff;
+  --surface: #0d1423;
+  --surface-border: rgba(248, 250, 252, 0.12);
+  --muted: #9aa8c7;
 }
 
 .dark {
@@ -30,6 +30,7 @@ body {
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
@@ -102,10 +103,25 @@ pre code {
   }
 }
 
+@keyframes accordion-content-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-accordion-down {
   animation: accordion-down 0.2s ease-out;
 }
 
 .animate-accordion-up {
   animation: accordion-up 0.2s ease-out;
+}
+
+.animate-accordion-content-fade {
+  animation: accordion-content-fade 0.28s ease-out;
 }

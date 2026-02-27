@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useI18n } from "@/components/providers/language-provider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,26 +102,23 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-50 border-b transition-all duration-300 ${
         isScrolled
-          ? "border-slate-200/85 bg-white/88 shadow-sm dark:border-white/10 dark:bg-zinc-950/82"
-          : "border-slate-200/70 bg-white/72 dark:border-white/10 dark:bg-zinc-950/62"
+          ? "border-white/12 bg-zinc-950/84 shadow-[0_8px_24px_rgba(2,8,20,0.35)]"
+          : "border-white/10 bg-zinc-950/66"
       } backdrop-blur-xl`}
     >
       <div className="mx-auto flex h-18 w-full max-w-6xl items-center justify-between px-5 md:px-8">
-        <span className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 text-slate-700 dark:border-white/15 dark:text-zinc-200">
+        <span className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-zinc-200">
           +
         </span>
 
-        <Link
-          href="/"
-          className="text-xs font-semibold tracking-[0.36em] text-slate-700 uppercase hover:text-slate-900 dark:text-zinc-200 dark:hover:text-white"
-        >
+        <Link href="/" className="text-xs font-semibold tracking-[0.36em] text-zinc-200 uppercase hover:text-white">
           ALBOT
         </Link>
 
         <div className="flex items-center gap-1 md:gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white/80 px-4 text-sm text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:border-white/15 dark:bg-transparent dark:text-zinc-200 dark:hover:border-white/30 dark:hover:text-white">
+              <button className="inline-flex h-10 items-center gap-2 rounded-full border border-white/15 bg-white/2 px-4 text-sm text-zinc-200 transition hover:border-white/30 hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:outline-none">
                 <Menu className="h-4 w-4" />
                 {dictionary.common.allPages}
               </button>
@@ -144,14 +140,12 @@ export function Navbar() {
                 key={item.label}
                 href={item.href}
                 className={`group relative rounded-full px-3 py-2 text-sm transition ${
-                  item.active
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-zinc-300 dark:hover:text-white"
+                  item.active ? "text-white" : "text-zinc-300 hover:text-white"
                 }`}
               >
                 {item.label}
                 <span
-                  className={`absolute inset-x-3 -bottom-[2px] h-[2px] origin-left rounded-full bg-cyan-500 transition-transform duration-300 dark:bg-cyan-300 ${
+                  className={`absolute inset-x-3 -bottom-[2px] h-[2px] origin-left rounded-full bg-cyan-300 transition-transform duration-300 ${
                     item.active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
                 />
@@ -160,7 +154,6 @@ export function Navbar() {
           </nav>
 
           <LanguageToggle />
-          <ThemeToggle />
         </div>
       </div>
     </header>

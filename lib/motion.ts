@@ -33,6 +33,11 @@ export const staggerContainer: Variants = {
   },
 };
 
+export const hoverScale: MotionProps["whileHover"] = {
+  scale: 1.02,
+  y: -2,
+};
+
 export const revealOnScroll: Pick<MotionProps, "initial" | "whileInView" | "viewport"> = {
   initial: "hidden",
   whileInView: "visible",
