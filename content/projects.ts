@@ -19,6 +19,20 @@ export type ProjectItem = {
 
 export const projects: ProjectItem[] = [
   {
+    slug: "xelak-tech-company-website",
+    title: "Xelak Tech Company Website",
+    description:
+      "Modern company website for Xelak Tech, built to present services clearly, capture leads, and communicate technical expertise with a premium UI.",
+    category: "SaaS",
+    tags: ["React", "TailwindCSS", "NestJS", "Nodemailer", "GSAP", "Framer Motion"],
+    image: "/images/projects/xelaktech-real.jpg",
+    featured: true,
+    links: {
+      demo: "https://xelaktech.com/",
+      github: "https://github.com/AlbotCiprian",
+    },
+  },
+  {
     slug: "instastore-marketplace",
     title: "Instastore.md Marketplace",
     description:
