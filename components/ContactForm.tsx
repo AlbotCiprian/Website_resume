@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import { Loader2, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/language-provider";
@@ -16,6 +16,18 @@ type FormState = {
   website: string;
 };
 
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      enterprise?: {
+        execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      };
+    };
+  }
+}
+
 const initialState: FormState = {
   name: "",
   email: "",
@@ -23,22 +35,83 @@ const initialState: FormState = {
   website: "",
 };
 
+const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY ?? "";
+const recaptchaUseEnterprise = process.env.NEXT_PUBLIC_RECAPTCHA_USE_ENTERPRISE === "true";
+const recaptchaAction = "contact_form_submit";
+
+function loadRecaptchaScript() {
+  if (!recaptchaSiteKey || typeof window === "undefined") {
+    return;
+  }
+
+  const existing = document.querySelector<HTMLScriptElement>("script[data-recaptcha='v3']");
+  if (existing) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = `https://www.google.com/recaptcha/${recaptchaUseEnterprise ? "enterprise.js" : "api.js"}?render=${recaptchaSiteKey}`;
+  script.async = true;
+  script.defer = true;
+  script.dataset.recaptcha = "v3";
+  document.head.appendChild(script);
+}
+
+async function createRecaptchaToken(): Promise<string> {
+  if (!recaptchaSiteKey) {
+    throw new Error("Missing NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY configuration.");
+  }
+
+  if (typeof window === "undefined" || !window.grecaptcha) {
+    throw new Error("reCAPTCHA is still loading. Please try again in a moment.");
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    window.grecaptcha?.ready(async () => {
+      try {
+        const execute = recaptchaUseEnterprise
+          ? window.grecaptcha?.enterprise?.execute
+          : window.grecaptcha?.execute;
+
+        if (!execute) {
+          reject(new Error("reCAPTCHA execute method is unavailable."));
+          return;
+        }
+
+        const token = await execute(recaptchaSiteKey, { action: recaptchaAction });
+        resolve(token);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+
 export function ContactForm() {
   const { dictionary } = useI18n();
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    loadRecaptchaScript();
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
+      const recaptchaToken = await createRecaptchaToken();
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          recaptchaToken,
+        }),
       });
 
       const data = (await response.json()) as { message?: string; error?: string };
@@ -116,3 +189,4 @@ export function ContactForm() {
     </form>
   );
 }
+

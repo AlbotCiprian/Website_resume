@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 type ContactPayload = {
@@ -6,6 +6,7 @@ type ContactPayload = {
   email?: string;
   message?: string;
   website?: string;
+  recaptchaToken?: string;
 };
 
 type RateLimitEntry = {
@@ -13,10 +14,20 @@ type RateLimitEntry = {
   resetAt: number;
 };
 
+type RecaptchaVerifyResponse = {
+  success?: boolean;
+  score?: number;
+  action?: string;
+  hostname?: string;
+  challenge_ts?: string;
+  "error-codes"?: string[];
+};
+
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
+const RECAPTCHA_ACTION = "contact_form_submit";
 
 function sanitize(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
@@ -28,6 +39,24 @@ function sanitizeHeaderValue(value: string): string {
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function parseBooleanEnv(raw: string | undefined, fallback = false): boolean {
+  if (typeof raw !== "string") {
+    return fallback;
+  }
+
+  const value = raw.toLowerCase().trim();
+  return value === "true";
+}
+
+function parseMinScore(raw: string | undefined): number {
+  const parsed = Number(raw ?? "0.5");
+  if (!Number.isFinite(parsed)) {
+    return 0.5;
+  }
+
+  return Math.min(1, Math.max(0, parsed));
 }
 
 function isRateLimited(key: string): boolean {
@@ -61,12 +90,80 @@ function formatSubmissionDate(date: Date): string {
   }).format(date);
 }
 
+async function verifyRecaptcha({
+  token,
+  remoteIp,
+}: {
+  token: string;
+  remoteIp: string;
+}): Promise<{ ok: true } | { ok: false; reason: string }> {
+  const bypass = parseBooleanEnv(process.env.RECAPTCHA_V3_BYPASS, false);
+  if (bypass) {
+    return { ok: true };
+  }
+
+  const secret = process.env.RECAPTCHA_V3_SECRET_KEY;
+  if (!secret) {
+    return { ok: false, reason: "Missing RECAPTCHA_V3_SECRET_KEY environment configuration." };
+  }
+
+  if (!token) {
+    return { ok: false, reason: "reCAPTCHA token is missing." };
+  }
+
+  const params = new URLSearchParams();
+  params.set("secret", secret);
+  params.set("response", token);
+  if (remoteIp !== "unknown-ip") {
+    params.set("remoteip", remoteIp);
+  }
+
+  let response: Response;
+  try {
+    response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
+      cache: "no-store",
+    });
+  } catch {
+    return { ok: false, reason: "Could not reach reCAPTCHA verification service." };
+  }
+
+  if (!response.ok) {
+    return { ok: false, reason: "reCAPTCHA verification request failed." };
+  }
+
+  const result = (await response.json()) as RecaptchaVerifyResponse;
+  if (!result.success) {
+    return { ok: false, reason: "reCAPTCHA verification was not successful." };
+  }
+
+  if (result.action && result.action !== RECAPTCHA_ACTION) {
+    return { ok: false, reason: "reCAPTCHA action mismatch." };
+  }
+
+  const minScore = parseMinScore(process.env.RECAPTCHA_V3_MIN_SCORE);
+  if (typeof result.score === "number" && result.score < minScore) {
+    return { ok: false, reason: "reCAPTCHA score was too low." };
+  }
+
+  return { ok: true };
+}
+
 async function sendEmail({
   name,
   email,
   message,
   submittedAt,
-}: Required<Omit<ContactPayload, "website">> & { submittedAt: Date }) {
+}: {
+  name: string;
+  email: string;
+  message: string;
+  submittedAt: Date;
+}) {
   const contactTo = process.env.CONTACT_TO_EMAIL;
   const contactFrom = process.env.CONTACT_FROM_EMAIL;
 
@@ -77,7 +174,8 @@ async function sendEmail({
   const submittedAtFormatted = formatSubmissionDate(submittedAt);
   const headerName = sanitizeHeaderValue(name);
   const headerEmail = sanitizeHeaderValue(email);
-  const subject = `Contact - Mesage - Webiste ${headerName} - ${headerEmail} - ${submittedAtFormatted}`;
+
+  const subject = `Contact - Mesage - Webiste [${headerName}] - [${headerEmail}] - [${submittedAtFormatted}]`;
   const textBody = [
     "Contact Form Submission",
     `Date/Time: ${submittedAtFormatted}`,
@@ -87,6 +185,7 @@ async function sendEmail({
     "Message:",
     message,
   ].join("\n");
+
   const htmlBody = `
     <h2>Contact Form Submission</h2>
     <p><strong>Date/Time:</strong> ${submittedAtFormatted}</p>
@@ -113,7 +212,7 @@ async function sendEmail({
 
   const smtpHost = process.env.SMTP_HOST;
   const smtpPort = Number(process.env.SMTP_PORT ?? "465");
-  const smtpSecure = (process.env.SMTP_SECURE ?? (smtpPort === 465 ? "true" : "false")) === "true";
+  const smtpSecure = parseBooleanEnv(process.env.SMTP_SECURE, smtpPort === 465);
   const smtpUser = process.env.SMTP_USER;
   const smtpPassword = process.env.SMTP_PASSWORD;
 
@@ -166,6 +265,7 @@ export async function POST(request: NextRequest) {
   const email = sanitize(payload.email);
   const message = sanitize(payload.message);
   const website = sanitize(payload.website);
+  const recaptchaToken = sanitize(payload.recaptchaToken);
 
   if (website.length > 0) {
     return NextResponse.json({ message: "Message sent." }, { status: 200 });
@@ -186,6 +286,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const recaptchaResult = await verifyRecaptcha({
+    token: recaptchaToken,
+    remoteIp: ip,
+  });
+
+  if (!recaptchaResult.ok) {
+    return NextResponse.json({ error: recaptchaResult.reason }, { status: 400 });
+  }
+
   try {
     await sendEmail({
       name,
@@ -203,3 +312,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
