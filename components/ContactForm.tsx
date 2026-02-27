@@ -4,6 +4,7 @@ import { Loader2, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import type { Dictionary } from "@/lib/i18n";
 import { useI18n } from "@/components/providers/language-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,7 @@ declare global {
       ready: (callback: () => void) => void;
       execute: (siteKey: string, options: { action: string }) => Promise<string>;
       enterprise?: {
+        ready: (callback: () => void) => void;
         execute: (siteKey: string, options: { action: string }) => Promise<string>;
       };
     };
@@ -39,13 +41,26 @@ const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY ?? "";
 const recaptchaUseEnterprise = process.env.NEXT_PUBLIC_RECAPTCHA_USE_ENTERPRISE === "true";
 const recaptchaAction = "contact_form_submit";
 
-function loadRecaptchaScript() {
+function loadRecaptchaScript({
+  onLoad,
+  onError,
+}: {
+  onLoad: () => void;
+  onError: () => void;
+}) {
   if (!recaptchaSiteKey || typeof window === "undefined") {
     return;
   }
 
   const existing = document.querySelector<HTMLScriptElement>("script[data-recaptcha='v3']");
   if (existing) {
+    if (window.grecaptcha) {
+      onLoad();
+      return;
+    }
+
+    existing.addEventListener("load", onLoad, { once: true });
+    existing.addEventListener("error", onError, { once: true });
     return;
   }
 
@@ -54,27 +69,47 @@ function loadRecaptchaScript() {
   script.async = true;
   script.defer = true;
   script.dataset.recaptcha = "v3";
+  script.addEventListener("load", onLoad, { once: true });
+  script.addEventListener("error", onError, { once: true });
   document.head.appendChild(script);
 }
 
-async function createRecaptchaToken(): Promise<string> {
+async function createRecaptchaToken({
+  scriptBlocked,
+  dictionary,
+}: {
+  scriptBlocked: boolean;
+  dictionary: Dictionary;
+}): Promise<string> {
   if (!recaptchaSiteKey) {
     throw new Error("Missing NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY configuration.");
   }
 
+  if (scriptBlocked) {
+    throw new Error(dictionary.contactForm.disableAdblock);
+  }
+
   if (typeof window === "undefined" || !window.grecaptcha) {
-    throw new Error("reCAPTCHA is still loading. Please try again in a moment.");
+    throw new Error(dictionary.contactForm.recaptchaLoading);
+  }
+
+  const ready = recaptchaUseEnterprise
+    ? window.grecaptcha.enterprise?.ready ?? window.grecaptcha.ready
+    : window.grecaptcha.ready;
+
+  if (typeof ready !== "function") {
+    throw new Error(dictionary.contactForm.disableAdblock);
   }
 
   return new Promise<string>((resolve, reject) => {
-    window.grecaptcha?.ready(async () => {
+    ready(async () => {
       try {
         const execute = recaptchaUseEnterprise
           ? window.grecaptcha?.enterprise?.execute
           : window.grecaptcha?.execute;
 
         if (!execute) {
-          reject(new Error("reCAPTCHA execute method is unavailable."));
+          reject(new Error(dictionary.contactForm.disableAdblock));
           return;
         }
 
@@ -91,9 +126,27 @@ export function ContactForm() {
   const { dictionary } = useI18n();
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
+  const [recaptchaScriptBlocked, setRecaptchaScriptBlocked] = useState(false);
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   useEffect(() => {
-    loadRecaptchaScript();
+    loadRecaptchaScript({
+      onLoad: () => {
+        setRecaptchaLoaded(true);
+        setRecaptchaScriptBlocked(false);
+      },
+      onError: () => {
+        setRecaptchaScriptBlocked(true);
+      },
+    });
+
+    const timeout = window.setTimeout(() => {
+      if (!window.grecaptcha) {
+        setRecaptchaScriptBlocked(true);
+      }
+    }, 4500);
+
+    return () => window.clearTimeout(timeout);
   }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -101,7 +154,10 @@ export function ContactForm() {
     setSubmitting(true);
 
     try {
-      const recaptchaToken = await createRecaptchaToken();
+      const recaptchaToken = await createRecaptchaToken({
+        scriptBlocked: recaptchaScriptBlocked || (!recaptchaLoaded && !window.grecaptcha),
+        dictionary,
+      });
 
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -189,4 +245,3 @@ export function ContactForm() {
     </form>
   );
 }
-

@@ -145,6 +145,8 @@ export const dictionaries = {
       sending: "Sending...",
       success: "Message sent successfully.",
       failed: "Could not send your message.",
+      disableAdblock: "Please disable AdBlock/privacy extensions to send your message.",
+      recaptchaLoading: "Security check is loading. Please try again in a moment.",
     },
     footer: {
       eyebrow: "Backend Systems",
@@ -334,6 +336,8 @@ export const dictionaries = {
       sending: "Se trimite...",
       success: "Mesaj trimis cu succes.",
       failed: "Mesajul nu a putut fi trimis.",
+      disableAdblock: "Va rugam sa dezactivati AdBlock/extensiile de protectie pentru a trimite mesajul.",
+      recaptchaLoading: "Verificarea de securitate se incarca. Va rugam sa incercati din nou.",
     },
     footer: {
       eyebrow: "Sisteme Backend",
