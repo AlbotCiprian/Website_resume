@@ -22,6 +22,10 @@ function sanitize(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function sanitizeHeaderValue(value: string): string {
+  return value.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -44,7 +48,25 @@ function isRateLimited(key: string): boolean {
   return false;
 }
 
-async function sendEmail({ name, email, message }: Required<Omit<ContactPayload, "website">>) {
+function formatSubmissionDate(date: Date): string {
+  return new Intl.DateTimeFormat("ro-RO", {
+    timeZone: "Europe/Chisinau",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+async function sendEmail({
+  name,
+  email,
+  message,
+  submittedAt,
+}: Required<Omit<ContactPayload, "website">> & { submittedAt: Date }) {
   const contactTo = process.env.CONTACT_TO_EMAIL;
   const contactFrom = process.env.CONTACT_FROM_EMAIL;
 
@@ -52,8 +74,27 @@ async function sendEmail({ name, email, message }: Required<Omit<ContactPayload,
     throw new Error("Missing CONTACT_TO_EMAIL or CONTACT_FROM_EMAIL environment configuration.");
   }
 
-  const subject = `Portfolio contact form: ${name}`;
-  const textBody = [`Name: ${name}`, `Email: ${email}`, "", "Message:", message].join("\n");
+  const submittedAtFormatted = formatSubmissionDate(submittedAt);
+  const headerName = sanitizeHeaderValue(name);
+  const headerEmail = sanitizeHeaderValue(email);
+  const subject = `Contact - Mesage - Webiste ${headerName} - ${headerEmail} - ${submittedAtFormatted}`;
+  const textBody = [
+    "Contact Form Submission",
+    `Date/Time: ${submittedAtFormatted}`,
+    `Name: ${name}`,
+    `Email: ${email}`,
+    "",
+    "Message:",
+    message,
+  ].join("\n");
+  const htmlBody = `
+    <h2>Contact Form Submission</h2>
+    <p><strong>Date/Time:</strong> ${submittedAtFormatted}</p>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message.replace(/\n/g, "<br />")}</p>
+  `;
 
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -64,6 +105,7 @@ async function sendEmail({ name, email, message }: Required<Omit<ContactPayload,
       replyTo: email,
       subject,
       text: textBody,
+      html: htmlBody,
     });
 
     return;
@@ -71,6 +113,7 @@ async function sendEmail({ name, email, message }: Required<Omit<ContactPayload,
 
   const smtpHost = process.env.SMTP_HOST;
   const smtpPort = Number(process.env.SMTP_PORT ?? "465");
+  const smtpSecure = (process.env.SMTP_SECURE ?? (smtpPort === 465 ? "true" : "false")) === "true";
   const smtpUser = process.env.SMTP_USER;
   const smtpPassword = process.env.SMTP_PASSWORD;
 
@@ -82,7 +125,7 @@ async function sendEmail({ name, email, message }: Required<Omit<ContactPayload,
   const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: smtpPort,
-    secure: smtpPort === 465,
+    secure: smtpSecure,
     auth: {
       user: smtpUser,
       pass: smtpPassword,
@@ -95,6 +138,7 @@ async function sendEmail({ name, email, message }: Required<Omit<ContactPayload,
     replyTo: email,
     subject,
     text: textBody,
+    html: htmlBody,
   });
 }
 
@@ -143,7 +187,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await sendEmail({ name, email, message });
+    await sendEmail({
+      name,
+      email,
+      message,
+      submittedAt: new Date(),
+    });
     return NextResponse.json({ message: "Thanks, your message was sent successfully." }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
