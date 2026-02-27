@@ -175,7 +175,7 @@ async function sendEmail({
   const headerName = sanitizeHeaderValue(name);
   const headerEmail = sanitizeHeaderValue(email);
 
-  const subject = `Contact - Mesage - Webiste [${headerName}] - [${headerEmail}] - [${submittedAtFormatted}]`;
+  const subject = `Website Message - ${headerName} - ${headerEmail} - ${submittedAtFormatted}`;
   const textBody = [
     "Contact Form Submission",
     `Date/Time: ${submittedAtFormatted}`,
@@ -312,4 +312,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
