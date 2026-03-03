@@ -1,5 +1,7 @@
 ﻿import type { Metadata } from "next";
 
+import type { ProjectItem } from "@/content/projects";
+
 import { absoluteUrl } from "@/lib/utils";
 
 export const siteConfig = {
@@ -119,5 +121,34 @@ export function articleJsonLd({
       "@type": "Person",
       name: "Albot Ciprian",
     },
+  };
+}
+
+export function projectsJsonLd(items: ProjectItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Selected engineering projects by Albot Ciprian",
+    itemListElement: items.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: project.seo.title,
+        headline: project.title,
+        alternativeHeadline: project.subtitle,
+        description: project.seo.description,
+        image: absoluteUrl(project.image),
+        url: absoluteUrl(`/projects#${project.slug}`),
+        sameAs: project.links.demo,
+        keywords: project.seo.keywords.join(", "),
+        genre: project.category,
+        creator: {
+          "@type": "Person",
+          name: "Albot Ciprian",
+        },
+        inLanguage: "en",
+      },
+    })),
   };
 }
