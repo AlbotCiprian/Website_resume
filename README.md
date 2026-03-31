@@ -81,7 +81,7 @@ Optional SMTP fallback (if not using Resend):
 Optional project metadata and GitHub rate-limit support:
 
 - `NEXT_PUBLIC_SITE_URL` (for canonical URLs, JSON-LD, sitemap)
-- `GITHUB_TOKEN` (optional, higher GitHub API limits)
+- `GITHUB_TOKEN` (strongly recommended on Vercel production; without it GitHub public events can intermittently return `403` because Vercel uses shared outbound IPs)
 
 ## Build & Quality
 
@@ -98,7 +98,8 @@ Both commands pass successfully on this codebase.
 2. Import project in Vercel.
 3. Add the environment variables from `.env.example` in Vercel Project Settings.
 4. Set `NEXT_PUBLIC_SITE_URL` to your production domain (for example `https://yourdomain.com`).
-5. Deploy.
+5. Add `GITHUB_TOKEN` in Vercel even if local works without issues, otherwise `/api/github` may fail intermittently with GitHub `403` responses.
+6. Deploy.
 
 Vercel uses:
 

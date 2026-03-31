@@ -35,6 +35,7 @@ type GithubEventResponse = {
 };
 
 const githubUser = "AlbotCiprian";
+const githubUnavailableMessage = "GitHub activity is temporarily unavailable.";
 
 function eventUrl(event: GithubEventResponse): string {
   const repoName = event.repo?.name;
@@ -142,7 +143,34 @@ export async function fetchGithubEvents(limit = 10): Promise<GithubEventItem[]> 
   );
 
   if (!response.ok) {
-    throw new Error(`GitHub API request failed with status ${response.status}`);
+    let upstreamMessage: string | undefined;
+    let documentationUrl: string | undefined;
+
+    try {
+      const errorPayload = (await response.json()) as {
+        message?: string;
+        documentation_url?: string;
+      };
+      upstreamMessage = errorPayload.message;
+      documentationUrl = errorPayload.documentation_url;
+    } catch {
+      upstreamMessage = undefined;
+      documentationUrl = undefined;
+    }
+
+    console.error("[github] upstream request failed", {
+      status: response.status,
+      user: githubUser,
+      tokenConfigured: Boolean(token),
+      rateLimitLimit: response.headers.get("x-ratelimit-limit"),
+      rateLimitRemaining: response.headers.get("x-ratelimit-remaining"),
+      rateLimitReset: response.headers.get("x-ratelimit-reset"),
+      rateLimitResource: response.headers.get("x-ratelimit-resource"),
+      upstreamMessage,
+      documentationUrl,
+    });
+
+    throw new Error(githubUnavailableMessage);
   }
 
   const rawEvents = (await response.json()) as GithubEventResponse[];
