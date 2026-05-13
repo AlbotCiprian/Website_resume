@@ -12,7 +12,7 @@ export const metadata = buildMetadata({
 
 export default async function HomePage() {
   const latestPosts = await getLatestPosts(3);
-  const featuredProjects = projects.filter((project) => project.featured).slice(0, 6);
+  const featuredProjects = projects.filter((project) => project.featured);
 
   const structuredData = [personJsonLd(), websiteJsonLd()];
 

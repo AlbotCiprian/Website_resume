@@ -55,16 +55,41 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
     [demoUrl, openDemo],
   );
 
+  const playPreview = useCallback((event: React.MouseEvent<HTMLVideoElement>) => {
+    event.currentTarget.play().catch(() => {
+      // Browsers can block preview playback; the poster remains the fallback.
+    });
+  }, []);
+
+  const pausePreview = useCallback((event: React.MouseEvent<HTMLVideoElement>) => {
+    event.currentTarget.pause();
+  }, []);
+
   const imageNode = (
     <div className="relative aspect-[16/10] overflow-hidden border-b border-slate-200 dark:border-white/10">
-      <Image
-        src={project.image}
-        alt={project.title}
-        fill
-        loading="lazy"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-      />
+      {project.video ? (
+        <video
+          src={project.video}
+          poster={project.image}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={`${project.title} preview video`}
+          onMouseEnter={playPreview}
+          onMouseLeave={pausePreview}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+        />
+      ) : (
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+        />
+      )}
     </div>
   );
 
@@ -167,6 +192,26 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
             </Badge>
           ))}
         </div>
+
+        {project.screenshots?.length ? (
+          <div className="grid grid-cols-3 gap-2">
+            {project.screenshots.map((screenshot, index) => (
+              <div
+                key={screenshot}
+                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-950"
+              >
+                <Image
+                  src={screenshot}
+                  alt={`${project.title} screenshot ${index + 1}`}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 768px) 30vw, 12vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        ) : null}
       </CardContent>
 
       {hasFooterLinks ? (

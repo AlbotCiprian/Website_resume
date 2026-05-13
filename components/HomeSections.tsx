@@ -314,14 +314,6 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
-        <div className="mt-8">
-          <Button asChild variant="secondary">
-            <Link href="/projects">
-              {dictionary.common.viewAllProjects}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
       </Section>
 
       <Section

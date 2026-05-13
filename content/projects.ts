@@ -20,6 +20,8 @@ export type ProjectItem = {
   category: Exclude<ProjectCategory, "All">;
   tags: string[];
   image: string;
+  video?: string;
+  screenshots?: string[];
   featured: boolean;
   seo: ProjectSeo;
   links: {
@@ -30,6 +32,119 @@ export type ProjectItem = {
 };
 
 export const projects: ProjectItem[] = [
+  {
+    slug: "telegram-learning-crm-automation-platform",
+    title: "Telegram Learning & CRM Automation Platform",
+    subtitle: "Telegram Engagement, CRM & Automation Ecosystem",
+    description:
+      "Developed a Telegram-based education and conversion platform with CRM integrations, onboarding automation, lesson delivery flows, async processing systems, and operational monitoring infrastructure.",
+    overview:
+      "Scalable Telegram automation ecosystem for education operations, onboarding flows, lesson delivery, CRM synchronization, and engagement management.",
+    implementation: [
+      "Telegram bot architecture for guided onboarding, lesson access, and conversion funnels",
+      "CRM integrations and lead synchronization across user journeys",
+      "Queue and background job processing for campaigns, lessons, and recovery workflows",
+      "Operational monitoring bot with status, health, queue, jobs, and log commands",
+      "Backend automation services designed for reliability, maintainability, and long-term scale",
+    ],
+    impact: [
+      "Automated user interaction and reduced manual education operations",
+      "Improved lead conversion through structured onboarding and engagement funnels",
+      "Higher production visibility with internal monitoring and recovery tooling",
+    ],
+    category: "Infra",
+    tags: ["Telegram API", "Automation", "CRM Integration", "Backend Development", "Node.js"],
+    image: "/images/bot1.png",
+    video: "/images/Bot_video.mp4",
+    screenshots: ["/images/bot2.png", "/images/bot3.png", "/images/bot4.png"],
+    featured: true,
+    seo: {
+      title: "Telegram Learning & CRM Automation Platform | Backend Automation Ecosystem",
+      description:
+        "Telegram education automation platform with CRM integrations, async jobs, onboarding funnels, monitoring bots, and scalable backend services.",
+      keywords: [
+        "Telegram API",
+        "Automation",
+        "CRM Integration",
+        "Node.js",
+        "BullMQ",
+        "Education Platform",
+      ],
+    },
+    links: {
+      demo: "https://t.me/allengual_english_bot",
+    },
+  },
+  {
+    slug: "crisrent-rental-booking-admin-platform",
+    title: "CrisRent Rental Booking & Admin Platform",
+    subtitle: "Photo/Video Equipment Rental Operations System",
+    description:
+      "Built a rental platform for photo and video equipment operations with booking workflows, availability logic, administrative control, and customer-facing presentation for the Moldova market.",
+    overview:
+      "Business platform designed to manage equipment rental operations end to end, from public catalog discovery and booking requests to internal administration and operational control.",
+    implementation: [
+      "Equipment catalog and rental presentation flows for customer discovery",
+      "Booking workflow connected to equipment availability and operational constraints",
+      "Admin panel for inventory, requests, content, and rental management",
+      "Responsive frontend implementation focused on trust, clarity, and conversion",
+      "Production deployment setup for a business-ready rental workflow",
+    ],
+    impact: [
+      "Improved rental request handling and operational autonomy",
+      "Clearer customer experience for browsing and booking equipment",
+      "Stronger foundation for inventory-driven business operations",
+    ],
+    category: "SaaS",
+    tags: ["Booking System", "Admin Panel", "Rental Platform", "Full Stack Development", "Automation"],
+    image: "/images/CrisRent_FB_Banner_Rich_Final.png",
+    video: "/images/Crisrent_video.mp4",
+    featured: true,
+    seo: {
+      title: "CrisRent Rental Booking & Admin Platform",
+      description:
+        "Photo and video equipment rental platform with booking workflows, availability logic, admin management, and responsive business presentation.",
+      keywords: ["Rental Platform", "Booking System", "Admin Panel", "Equipment Rental", "Full Stack"],
+    },
+    links: {
+      demo: "https://www.crisrent.md/",
+    },
+  },
+  {
+    slug: "jbi-smile-design-dental-booking-platform",
+    title: "Modern Dental Clinic Platform with Booking & Admin System",
+    subtitle: "Modern Dental Operations & Booking Ecosystem",
+    description:
+      "Developed a modern healthcare-oriented platform for dental clinic operations, online appointment booking, patient interaction, and administrative management.",
+    overview:
+      "Digital platform for a dental clinic with emphasis on patient interaction, appointment management, operational workflows, multilingual content, and scalable backend infrastructure.",
+    implementation: [
+      "Full-stack application development for healthcare service presentation and booking",
+      "Booking and scheduling workflows with service selection and preferred time handling",
+      "Backend API architecture supporting appointment intake and administrative workflows",
+      "SEO-oriented frontend structure with RO, EN, and RU user experience support",
+      "Responsive UI implementation and production deployment on Vercel",
+    ],
+    impact: [
+      "Improved digital presence and trust for a healthcare business",
+      "Simplified appointment requests across desktop and mobile devices",
+      "Created a maintainable foundation for long-term clinic operations",
+    ],
+    category: "SaaS",
+    tags: ["Full Stack Development", "Booking System", "API Development", "PostgreSQL", "Healthcare Software"],
+    image: "/images/jbi1.png",
+    screenshots: ["/images/jbi2.png", "/images/jbi3.png", "/images/jbi4.png"],
+    featured: true,
+    seo: {
+      title: "Modern Dental Clinic Platform with Booking & Admin System",
+      description:
+        "Healthcare platform for dental clinic operations with appointment booking, patient workflows, SEO structure, admin support, and responsive UI.",
+      keywords: ["Healthcare Software", "Booking System", "Next.js", "PostgreSQL", "Admin System"],
+    },
+    links: {
+      demo: "https://jbi-smile-design.vercel.app/",
+    },
+  },
   {
     slug: "xelak-tech-company-website",
     title: "Xelak Tech Company Website",
@@ -85,7 +200,9 @@ export const projects: ProjectItem[] = [
     ],
     category: "SaaS",
     tags: ["Node.js", "PostgreSQL", "Vercel", "Neon", "Architecture"],
-    image: "/images/projects/instastore-real.webp",
+    image: "/images/instastore_1.png",
+    video: "/images/InstaStore _ Marketplace Curated - 13 May 2026 (1).mp4",
+    screenshots: ["/images/instastore_2.png", "/images/instastore_3.png", "/images/instastore_4.png"],
     featured: true,
     seo: {
       title: "Instastore.md Marketplace | Modular Full-Stack SaaS",
@@ -316,7 +433,9 @@ export const projects: ProjectItem[] = [
     ],
     category: "SaaS",
     tags: ["Next.js", "PostgreSQL", "Node.js", "SEO Architecture", "Marketplace Logic"],
-    image: "/images/projects/instastore-enterprise.webp",
+    image: "/images/instastore_5.png",
+    video: "/images/InstaStore _ Marketplace Curated - 13 May 2026 (1).mp4",
+    screenshots: ["/images/instastore_1.png", "/images/instastore_2.png", "/images/instastore_6.png"],
     featured: true,
     seo: {
       title: "Instastore Full Custom E-Commerce Architecture",
