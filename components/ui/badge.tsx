@@ -1,15 +1,26 @@
-﻿import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Badge — retro chip primitive.
+ * Variants:
+ *   - default: amber phosphor accent
+ *   - muted:   neutral surface chip
+ *   - outline: hairline border, no fill
+ *   - mono:    mono uppercase, ink-mono color (for tech tags)
+ *   - positive: green for OK / impact markers
+ */
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium tracking-wide transition-colors",
+  "inline-flex items-center rounded-sm border px-2.5 py-0.5 text-[11px] font-medium tracking-[0.04em] transition-colors",
   {
     variants: {
       variant: {
-        default: "border-cyan-400/35 bg-cyan-500/15 text-cyan-700 dark:text-cyan-200",
-        muted: "border-slate-200 bg-slate-100 text-slate-700 dark:border-white/15 dark:bg-white/5 dark:text-zinc-300",
-        outline: "border-slate-300 text-slate-700 dark:border-white/20 dark:text-zinc-300",
+        default: "border-accent/40 bg-accent-soft text-accent",
+        muted: "border-line bg-canvas/40 text-ink-soft",
+        outline: "border-line text-ink-soft",
+        mono: "border-line bg-canvas/40 text-ink-mono mono uppercase tracking-[0.14em]",
+        positive: "border-accent-positive/40 bg-accent-positive/10 text-accent-positive",
       },
     },
     defaultVariants: {

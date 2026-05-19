@@ -26,6 +26,8 @@ export default async function ProjectsPage() {
       />
 
       <Section
+        commandIndex="04"
+        command="project_archive/"
         eyebrow={dictionary.projectsPage.eyebrow}
         title={dictionary.projectsPage.title}
         description={dictionary.projectsPage.description}

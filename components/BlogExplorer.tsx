@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,11 +6,19 @@ import { useMemo, useState } from "react";
 
 import type { PostMeta } from "@/lib/mdx";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 import { BlogCard } from "@/components/BlogCard";
 import { useI18n } from "@/components/providers/language-provider";
 import { Input } from "@/components/ui/input";
 
+/**
+ * BlogExplorer — terminal-style search + tag filter for the blog index.
+ *
+ * Header reads like a shell command:
+ *   $ grep -i "..." technical_notes/
+ * Tag filters render as bracketed pill chips with an amber active state.
+ */
 export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState<string>("All");
@@ -39,9 +47,20 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
 
   return (
     <div>
-      <div className="mb-8 grid gap-4 md:grid-cols-[1fr_auto]">
+      {/* Command header */}
+      <div className="mb-3 flex items-center gap-2 mono text-[10.5px] tracking-[0.18em] text-ink-faint uppercase">
+        <span className="text-ink-mono">$</span>
+        <span>grep -i</span>
+        <span className="text-accent">{`"${query || "*"}"`}</span>
+        <span>technical_notes/</span>
+        <span aria-hidden className="hairline flex-1" />
+        <span>{filteredPosts.length} match</span>
+      </div>
+
+      <div className="mb-8 grid gap-3 md:grid-cols-[1fr_auto]">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
+          <span className="sr-only">{dictionary.blogExplorer.searchPlaceholder}</span>
+          <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-ink-faint" />
           <Input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -50,26 +69,35 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
           />
         </label>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           {tags.map((item) => (
             <button
               key={item}
               type="button"
               onClick={() => setTag(item)}
-              className={`rounded-full border px-3 py-1.5 text-sm transition ${
+              aria-pressed={tag === item}
+              className={cn(
+                "mono inline-flex items-center gap-1 rounded-sm border px-2.5 py-1.5 text-[10.5px] tracking-[0.14em] uppercase transition-colors",
                 tag === item
-                  ? "border-cyan-500/40 bg-cyan-500/12 text-cyan-700 dark:border-cyan-400/50 dark:bg-cyan-500/20 dark:text-cyan-100"
-                  : "border-slate-300 bg-white/85 text-slate-700 hover:border-slate-400 hover:text-slate-900 dark:border-white/15 dark:bg-white/5 dark:text-zinc-300 dark:hover:border-white/30 dark:hover:text-white"
-              }`}
+                  ? "border-accent/55 bg-accent-soft text-accent"
+                  : "border-line bg-canvas/40 text-ink-soft hover:border-line-strong hover:text-ink",
+              )}
             >
-              {item === "All" ? dictionary.filters.All : item}
+              <span aria-hidden className="text-ink-faint">{"["}</span>
+              <span>{item === "All" ? dictionary.filters.All : item}</span>
+              <span aria-hidden className="text-ink-faint">{"]"}</span>
             </button>
           ))}
         </div>
       </div>
 
       {filteredPosts.length ? (
-        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
+        >
           {filteredPosts.map((post) => (
             <motion.div key={post.slug} variants={fadeUp}>
               <BlogCard post={post} />
@@ -77,7 +105,8 @@ export function BlogExplorer({ posts }: { posts: PostMeta[] }) {
           ))}
         </motion.div>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400">
+        <div className="rounded-sm border border-line bg-elevated/95 p-8 text-center mono text-[13px] text-ink-soft">
+          <span aria-hidden className="text-ink-faint">{">"} </span>
           {dictionary.blogExplorer.noResults}
         </div>
       )}

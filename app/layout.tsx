@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { CRTOverlay } from "@/components/system/CRTOverlay";
 import { LanguageProvider } from "@/components/providers/language-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getServerLocale } from "@/lib/i18n-server";
@@ -84,6 +85,9 @@ export default async function RootLayout({
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            {/* CRT overlay — scanlines + grain + vignette, sits above content
+                with pointer-events: none. */}
+            <CRTOverlay />
           </LanguageProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

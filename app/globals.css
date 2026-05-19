@@ -1,27 +1,89 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
+
+/* ============================================================
+   ALBOT-OS — Retro Programming Workstation
+   Premium retro PC vibe. Warm phosphor cream on cool graphite,
+   amber as primary accent, muted green for "ok/positive",
+   cyan only as a small technical accent. CRT scanlines + grain
+   live as a separate global overlay (see CRTOverlay component).
+   ============================================================ */
 
 :root {
-  --background: #050910;
-  --foreground: #f3f7ff;
-  --surface: #0d1423;
-  --surface-border: rgba(248, 250, 252, 0.12);
-  --muted: #9aa8c7;
-}
+  /* Surfaces — cool graphite, never pure black */
+  --canvas: #0a0b0e;
+  --elevated: #11131a;
+  --surface: #161a24;
+  --raised: #1d2230;
+  /* Warm hardware tone — used sparingly on retro panel chrome */
+  --bezel: #2a241c;
 
-.dark {
-  --background: #050910;
-  --foreground: #f3f7ff;
-  --surface: #0d1423;
-  --surface-border: rgba(248, 250, 252, 0.12);
-  --muted: #9aa8c7;
+  /* Borders */
+  --border-subtle: rgba(220, 200, 158, 0.06);
+  --border-default: rgba(220, 200, 158, 0.12);
+  --border-strong: rgba(220, 200, 158, 0.22);
+  --border-accent: rgba(232, 163, 61, 0.4);
+
+  /* Text — warm phosphor cream on cool graphite (classic CRT) */
+  --ink: #f0e9d2;
+  --ink-soft: #c6b896;
+  --ink-faint: #807559;
+  --ink-mono: #d6c590;
+
+  /* Accents — used sparingly, with discipline */
+  --accent: #e8a33d; /* amber — primary */
+  --accent-soft: rgba(232, 163, 61, 0.14);
+  --accent-positive: #7bb56e; /* muted phosphor green */
+  --accent-warning: #f0b04b;
+  --accent-critical: #e5635c;
+  --accent-cyan: #6fd6e8; /* technical accent only */
+
+  /* Line tokens for borders */
+  --line-subtle: var(--border-subtle);
+  --line: var(--border-default);
+  --line-strong: var(--border-strong);
+  --line-accent: var(--border-accent);
+
+  /* Legacy compat aliases (kept until later phases remove them) */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --surface-border: var(--line);
+  --muted: var(--ink-soft);
 }
 
 @theme inline {
   --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-ibm-plex-mono);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+
+  --color-canvas: var(--canvas);
+  --color-elevated: var(--elevated);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-bezel: var(--bezel);
+
+  --color-line-subtle: var(--line-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-accent: var(--line-accent);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-mono: var(--ink-mono);
+
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-positive: var(--accent-positive);
+  --color-accent-warning: var(--accent-warning);
+  --color-accent-critical: var(--accent-critical);
+  --color-accent-cyan: var(--accent-cyan);
 }
+
+/* ============================================================
+   Base
+   ============================================================ */
 
 html,
 body {
@@ -31,15 +93,38 @@ body {
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  scrollbar-gutter: stable;
 }
 
 body {
-  font-family: var(--font-sans), sans-serif;
-  background:
-    radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.14), transparent 24%),
-    radial-gradient(circle at 88% 72%, rgba(16, 185, 129, 0.1), transparent 28%),
-    var(--background);
-  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  color: var(--ink);
+  background-color: var(--canvas);
+  background-image:
+    /* warm vignette top-left (CRT phosphor warm) */
+    radial-gradient(circle at 12% 8%, rgba(232, 163, 61, 0.06), transparent 30%),
+    /* cool vignette bottom-right */
+    radial-gradient(circle at 88% 84%, rgba(111, 214, 232, 0.04), transparent 38%),
+    linear-gradient(180deg, #08090c 0%, #0a0b0e 60%, #07080b 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Blueprint dot grid layer */
+.blueprint-grid {
+  position: relative;
+}
+.blueprint-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(220, 200, 158, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 95%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 95%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -53,9 +138,101 @@ a {
 }
 
 ::selection {
-  background: rgba(6, 182, 212, 0.28);
-  color: #ecfeff;
+  background: rgba(232, 163, 61, 0.32);
+  color: #f7efd6;
 }
+
+/* ============================================================
+   Focus — keyboard-only ring
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Mono utilities — CRT phosphor display feel
+   ============================================================ */
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-feature-settings: "tnum", "zero";
+  letter-spacing: 0.02em;
+}
+
+.mono-eyebrow {
+  font-family: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mono);
+  font-feature-settings: "tnum";
+}
+
+/* ============================================================
+   Hairline rule — editorial divider
+   ============================================================ */
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(220, 200, 158, 0.22) 18%,
+    rgba(220, 200, 158, 0.22) 82%,
+    transparent 100%
+  );
+}
+
+/* ============================================================
+   Retro terminal — soft phosphor text glow
+   ============================================================ */
+
+.term-glow {
+  text-shadow: 0 0 0.6px rgba(232, 163, 61, 0.35);
+}
+
+.term-glow-green {
+  text-shadow: 0 0 0.6px rgba(123, 181, 110, 0.4);
+}
+
+/* ============================================================
+   Blinking terminal cursor
+   ============================================================ */
+
+@keyframes terminal-cursor {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.term-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(232, 163, 61, 0.4);
+  animation: terminal-cursor 1s steps(2) infinite;
+}
+
+.term-cursor-green {
+  background: var(--accent-positive);
+  box-shadow: 0 0 8px rgba(123, 181, 110, 0.4);
+}
+
+/* ============================================================
+   MDX code block styles (kept; tuned to new palette)
+   ============================================================ */
 
 pre code {
   background: transparent !important;
@@ -68,15 +245,16 @@ pre code {
   margin-bottom: 1.5rem;
   overflow: hidden;
   border-radius: 1rem;
-  border: 1px solid rgba(248, 250, 252, 0.1);
+  border: 1px solid var(--line-subtle);
 }
 
 [data-rehype-pretty-code-title] {
-  border-bottom: 1px solid rgba(248, 250, 252, 0.12);
-  background: rgba(12, 18, 32, 0.88);
+  border-bottom: 1px solid var(--line);
+  background: rgba(17, 19, 26, 0.88);
   padding: 0.55rem 0.9rem;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: #9fb2d8;
+  color: var(--ink-mono);
 }
 
 [data-rehype-pretty-code-figure] pre {
@@ -84,6 +262,10 @@ pre code {
   border-radius: 0;
   border: none;
 }
+
+/* ============================================================
+   Accordion
+   ============================================================ */
 
 @keyframes accordion-down {
   from {
@@ -124,4 +306,100 @@ pre code {
 
 .animate-accordion-content-fade {
   animation: accordion-content-fade 0.28s ease-out;
+}
+
+/* ============================================================
+   ArchitectureCanvas packet motion
+   ============================================================ */
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.node-pulse {
+  animation: node-pulse 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.scan-line {
+  animation: scan-line 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node-pulse,
+  .scan-line {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   CRT overlay — scanlines + grain. Lives in CRTOverlay.tsx and
+   layers above all content with pointer-events: none.
+   ============================================================ */
+
+.crt-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.16) 3px,
+    rgba(0, 0, 0, 0.16) 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+.crt-vignette {
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.32) 100%);
+}
+
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: 0.97;
+  }
+  47% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 0.92;
+  }
+  49% {
+    opacity: 1;
+  }
+}
+
+.crt-flicker {
+  animation: crt-flicker 5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-flicker {
+    animation: none;
+  }
 }

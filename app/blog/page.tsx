@@ -15,6 +15,8 @@ export default async function BlogPage() {
 
   return (
     <Section
+      commandIndex="07"
+      command="technical_notes/"
       eyebrow={dictionary.blogPage.eyebrow}
       title={dictionary.blogPage.title}
       description={dictionary.blogPage.description}
