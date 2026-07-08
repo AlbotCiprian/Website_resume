@@ -34,6 +34,15 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
 
+  // Adjust state on route change during render (instead of in an effect):
+  // close the mobile sheet, and clear the active section when leaving home.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMobileOpen(false);
+    if (pathname !== "/") setActiveSection("");
+  }
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 16);
     onScroll();
@@ -42,10 +51,7 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (pathname !== "/") {
-      setActiveSection("");
-      return;
-    }
+    if (pathname !== "/") return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -63,10 +69,6 @@ export function Navbar() {
     });
 
     return () => observer.disconnect();
-  }, [pathname]);
-
-  useEffect(() => {
-    setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {

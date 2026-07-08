@@ -65,7 +65,7 @@ export function AboutTerminalSection({
             variants={fadeUp}
             className="mono mb-5 flex items-center gap-2 text-[11px] tracking-[0.2em] text-ink-mono uppercase"
           >
-            <span className="text-ink-faint">//</span>
+            <span className="text-ink-faint">{"//"}</span>
             <span className="text-ink-faint">02 —</span>
             <span>./whoami</span>
             <span aria-hidden className="ml-2 hairline w-12" />

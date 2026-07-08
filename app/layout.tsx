@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { CRTOverlay } from "@/components/system/CRTOverlay";
+import { LoadingScreen } from "@/components/system/LoadingScreen";
 import { LanguageProvider } from "@/components/providers/language-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getServerLocale } from "@/lib/i18n-server";
@@ -80,6 +81,7 @@ export default async function RootLayout({
       <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased`}>
         <ThemeProvider>
           <LanguageProvider initialLocale={locale}>
+            <LoadingScreen />
             <div className="relative flex min-h-screen flex-col overflow-x-clip bg-background text-foreground">
               <Navbar />
               <main className="flex-1">{children}</main>

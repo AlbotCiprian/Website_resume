@@ -52,7 +52,7 @@ export function Section({
       <Container>
         <motion.div variants={fadeUp} className="mb-10 max-w-3xl">
           <div className="mono mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] tracking-[0.2em] text-ink-mono uppercase">
-            <span className="text-ink-faint">//</span>
+            <span className="text-ink-faint">{"//"}</span>
             {commandIndex ? <span className="text-ink-faint">{commandIndex} —</span> : null}
             <span>{derivedCommand}</span>
             {eyebrow ? (

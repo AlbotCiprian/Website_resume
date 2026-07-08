@@ -204,7 +204,7 @@ export function HeroSection() {
         <div className="mt-14 md:mt-16">
           <div className="mono mb-3 flex items-center gap-3 text-[10.5px] tracking-[0.2em] text-ink-faint uppercase">
             <span aria-hidden className="hairline w-8 shrink-0" />
-            <span>// system diagnostics</span>
+            <span>{"// system diagnostics"}</span>
             <span aria-hidden className="hairline flex-1" />
           </div>
           <ReliabilityMetrics />
@@ -222,7 +222,7 @@ function HeaderBar() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 border-y border-line-subtle bg-canvas/55 px-3 py-2 mono text-[10.5px] tracking-[0.18em] text-ink-mono uppercase">
       <div className="flex items-center gap-3">
-        <span className="text-ink-faint">//</span>
+        <span className="text-ink-faint">{"//"}</span>
         <span className="text-ink-faint">01 —</span>
         <span>profile.boot</span>
       </div>

@@ -59,15 +59,17 @@ const STATUS_LABEL: Record<NonNullable<BootLine["status"]>, string> = {
  */
 export function BootSequence({ lines = DEFAULT_LINES, onComplete, className }: BootSequenceProps) {
   const reducedMotion = useReducedMotion();
-  const [currentLine, setCurrentLine] = useState(0);
+  const [typedLine, setTypedLine] = useState(0);
+  // When reduced motion is on, jump straight to the fully revealed state
+  // (derived during render, so no setState-in-effect is needed).
+  const currentLine = reducedMotion ? lines.length : typedLine;
 
-  // When reduced motion is on, jump straight to fully revealed state.
+  // Reduced motion still needs to notify the consumer once, via an effect.
   useEffect(() => {
     if (reducedMotion) {
-      setCurrentLine(lines.length);
       onComplete?.();
     }
-  }, [reducedMotion, lines.length, onComplete]);
+  }, [reducedMotion, onComplete]);
 
   return (
     <div className={cn("mono space-y-1.5 text-[12.5px] leading-6 md:text-[13px]", className)}>
@@ -94,7 +96,7 @@ export function BootSequence({ lines = DEFAULT_LINES, onComplete, className }: B
                       return;
                     }
                     // Move to the next line after a short beat.
-                    window.setTimeout(() => setCurrentLine((value) => value + 1), 110);
+                    window.setTimeout(() => setTypedLine((value) => value + 1), 110);
                   }}
                 />
               ) : (

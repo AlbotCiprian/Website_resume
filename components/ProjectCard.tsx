@@ -139,7 +139,7 @@ export function ProjectCard({ project }: { project: ProjectItem }) {
             )}
           </h3>
           <p className="mono text-[12.5px] tracking-[0.04em] text-ink-mono">
-            <span aria-hidden className="text-ink-faint">// </span>
+            <span aria-hidden className="text-ink-faint">{"// "}</span>
             {project.subtitle}
           </p>
         </header>

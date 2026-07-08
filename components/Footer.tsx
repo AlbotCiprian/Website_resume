@@ -169,7 +169,7 @@ function FooterGroup({
   return (
     <div>
       <h4 className="mono text-[10px] tracking-[0.22em] text-ink-mono uppercase">
-        <span aria-hidden className="text-ink-faint">// </span>
+        <span aria-hidden className="text-ink-faint">{"// "}</span>
         {group.title}
       </h4>
       <ul className="mt-4 space-y-3 text-[14px] text-ink-soft">

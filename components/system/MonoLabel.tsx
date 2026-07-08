@@ -21,7 +21,7 @@ type MonoLabelProps = {
 export function MonoLabel({ index, children, className, showSlash = true }: MonoLabelProps) {
   return (
     <span className={cn("mono-eyebrow inline-flex items-center gap-2", className)}>
-      {showSlash ? <span aria-hidden className="text-ink-faint">//</span> : null}
+      {showSlash ? <span aria-hidden className="text-ink-faint">{"//"}</span> : null}
       {index ? <span aria-hidden className="text-ink-faint">{index.padStart(2, "0")} —</span> : null}
       <span className="text-ink-mono">{children}</span>
     </span>

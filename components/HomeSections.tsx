@@ -11,6 +11,7 @@ import type { ProjectItem } from "@/content/projects";
 import { fadeUp, revealOnScroll, staggerContainer } from "@/lib/motion";
 
 import { AboutTerminalSection } from "@/components/system/AboutTerminalSection";
+import { CompanyLogosMarquee } from "@/components/system/CompanyLogosMarquee";
 import { BlogCard } from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
@@ -22,6 +23,7 @@ import { Timeline } from "@/components/Timeline";
 import { useI18n } from "@/components/providers/language-provider";
 import { experience } from "@/content/experience";
 import { profile } from "@/content/profile";
+import { techPartners } from "@/content/tech-partners";
 
 const GithubFeed = dynamic(() => import("@/components/GithubFeed").then((module) => module.GithubFeed), {
   ssr: false,
@@ -65,6 +67,12 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
   return (
     <>
       <HeroSection />
+
+      <CompanyLogosMarquee
+        eyebrow={dictionary.home.clients.eyebrow}
+        title={dictionary.home.clients.title}
+        variant="dark"
+      />
 
       <AboutTerminalSection
         whyChooseItems={whyChooseItems}
@@ -120,6 +128,15 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
       >
         <TechStack groups={profile.skills} />
       </Section>
+
+      <CompanyLogosMarquee
+        items={techPartners}
+        eyebrow={dictionary.home.integrations.eyebrow}
+        title={dictionary.home.integrations.title}
+        durationSeconds={52}
+        reverse
+        variant="light"
+      />
 
       <Section
         id="github"
@@ -190,7 +207,7 @@ export function HomeSections({ featuredProjects, latestPosts }: { featuredProjec
             </div>
             <div className="p-5 md:p-6">
               <h3 className="mono text-[11px] tracking-[0.2em] text-ink-faint uppercase">
-                <span aria-hidden>// </span>
+                <span aria-hidden>{"// "}</span>
                 {dictionary.common.directChannels}
               </h3>
               <ul className="mt-4 space-y-3 text-[14px]">

@@ -250,6 +250,40 @@ export const projects: ProjectItem[] = [
     },
   },
   {
+    slug: "meghome-ecommerce-platform",
+    title: "MegHome E-Commerce Platform",
+    subtitle: "Home & Living Storefront with Catalog, Admin & Payments",
+    description:
+      "Full-stack e-commerce platform for home and living products with a large catalog, category navigation, promotions, admin management, and secure online payments for the Moldova market.",
+    overview:
+      "Production storefront engineered for thousands of SKUs, with fast category browsing, sorting and filtering, an admin panel for catalog and orders, SEO-oriented pages, and integrated card/cash-on-delivery checkout.",
+    implementation: [
+      "Next.js App Router storefront with performance-first rendering and image optimization",
+      "Scalable catalog architecture: categories, filters, sorting, and paginated product listings",
+      "Admin panel for products, stock, promotions, and order management",
+      "Secure checkout with MAIB card payments and cash-on-delivery, plus returns workflow",
+      "SEO-oriented structure and metadata for organic product discovery",
+    ],
+    impact: [
+      "Handles a large product catalog with fast, filterable browsing",
+      "Streamlined operations through an integrated admin and order workflow",
+      "Trust-first shopping experience with secure payments and clear delivery/returns",
+    ],
+    category: "SaaS",
+    tags: ["Next.js", "PostgreSQL", "E-Commerce", "Payments", "Admin Panel", "SEO"],
+    image: "/images/projects/meghome-real.webp",
+    featured: true,
+    seo: {
+      title: "MegHome E-Commerce Platform | Next.js Home & Living Storefront",
+      description:
+        "Full-stack e-commerce platform for home products with scalable catalog, admin management, secure payments, and SEO-oriented storefront for the Moldova market.",
+      keywords: ["Next.js", "E-Commerce", "PostgreSQL", "Payments", "Admin Panel", "SEO"],
+    },
+    links: {
+      demo: "https://www.meghome.md/home",
+    },
+  },
+  {
     slug: "enterprise-banking-intranet-dr-eximbank",
     title: "Enterprise Banking Intranet & DR Architecture - Eximbank",
     subtitle: "Internal Digital Platform & Disaster Recovery Implementation",

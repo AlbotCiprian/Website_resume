@@ -39,15 +39,20 @@ export function TypewriterText({
   className,
 }: TypewriterTextProps) {
   const reducedMotion = useReducedMotion();
-  const [output, setOutput] = useState("");
-  const [done, setDone] = useState(false);
+  const [typedOutput, setTypedOutput] = useState("");
+  const [typedDone, setTypedDone] = useState(false);
   const onDoneRef = useRef(onDone);
-  onDoneRef.current = onDone;
+  useEffect(() => {
+    onDoneRef.current = onDone;
+  });
+
+  // Reduced motion shows the full string immediately (derived during render,
+  // so no synchronous setState in the effect is needed).
+  const output = reducedMotion ? text : typedOutput;
+  const done = reducedMotion ? true : typedDone;
 
   useEffect(() => {
     if (reducedMotion) {
-      setOutput(text);
-      setDone(true);
       const id = window.setTimeout(() => onDoneRef.current?.(), 0);
       return () => window.clearTimeout(id);
     }
@@ -60,10 +65,10 @@ export function TypewriterText({
       const id = window.setInterval(() => {
         if (cancelled) return;
         index += 1;
-        setOutput(text.slice(0, index));
+        setTypedOutput(text.slice(0, index));
         if (index >= text.length) {
           window.clearInterval(id);
-          setDone(true);
+          setTypedDone(true);
           onDoneRef.current?.();
         }
       }, intervalMs);

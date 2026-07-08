@@ -47,7 +47,21 @@ export const dictionaries = {
         "Data Platforms",
       ],
     },
+    loading: {
+      system: "ALBOT-OS · boot sequence",
+      subtitle: "senior backend systems · initializing",
+      skip: "click or press any key to skip",
+      aria: "Loading portfolio",
+    },
     home: {
+      clients: {
+        eyebrow: "// worked with",
+        title: "Companies & products I've built for",
+      },
+      integrations: {
+        eyebrow: "// stack, integrations & certifications",
+        title: "Technologies, integrations & certifications I work with",
+      },
       why: {
         eyebrow: "Why choose me",
         title: "Architecture clarity with production discipline.",
@@ -238,7 +252,21 @@ export const dictionaries = {
         "Platforme de date",
       ],
     },
+    loading: {
+      system: "ALBOT-OS · secventa de boot",
+      subtitle: "sisteme backend senior · initializare",
+      skip: "click sau orice tasta pentru a sari",
+      aria: "Se incarca portofoliul",
+    },
     home: {
+      clients: {
+        eyebrow: "// am lucrat cu",
+        title: "Companii si produse pentru care am construit",
+      },
+      integrations: {
+        eyebrow: "// stack, integrari & certificari",
+        title: "Tehnologii, integrari si certificari cu care lucrez",
+      },
       why: {
         eyebrow: "De ce sa lucrezi cu mine",
         title: "Claritate arhitecturala cu disciplina de productie.",
